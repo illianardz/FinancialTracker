@@ -4,14 +4,9 @@
       "developmentClient": true,
       "distribution": "internal"
     },
-    "production": {
-      "ios": {
-        "simulator": true,
-        "buildType": "app-store"
-      },
-      "android": {
-        "buildType": "apk"
-      }
-    }
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {}
   }
 }
