@@ -4,6 +4,12 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 
 export default function CreateGoal() {
   const questions = [
     {
+      questionText: 'Set a new goal!',
+      answerOptions: [
+        { answerText: 'Click next to continue'}
+      ]
+    },
+    {
       questionText: 'Is your goal short-term or long-term?',
       answerOptions: [
         { answerText: 'Short-term', type: 'radio' },
@@ -16,13 +22,13 @@ export default function CreateGoal() {
         { answerText: 'Vacation', type: 'radio' },
         { answerText: 'Debt Repayment', type: 'radio' },
         { answerText: 'Emergency Fund', type: 'radio' },
-        { answerText: 'Other', type: 'textInput' },
+        { answerText: 'Other', type: 'textInput1' },
       ],
     },
     {
       questionText: 'Goal Details',
       answerOptions: [
-        { answerText: 'Target amount: ', type: 'textInput' },
+        { answerText: 'Target amount: ', type: 'textInput2' },
         { answerText: 'Target time frame: ', type: 'dropdown' },
       ],
     },
@@ -31,12 +37,18 @@ export default function CreateGoal() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({});
   const [surveyComplete, setSurveyComplete] = useState(false);
+  const [selectAnswer, setSelectAnswer] = useState(null);
 
   // Handle input change based on question type
   const handleAnswerChange = (text, questionIndex) => {
     const newAnswers = { ...answers, [questionIndex]: text };
     setAnswers(newAnswers);
   };
+
+  const handleRadioSelect = (answerText, questionIndex, optionIndex) => {
+    handleAnswerChange(answerText, questionIndex);
+    setSelectAnswer(optionIndex);
+  }
 
   // Move to the next question or complete the survey
   const handleNext = () => {
@@ -58,7 +70,7 @@ export default function CreateGoal() {
     <ScrollView contentContainerStyle={styles.container}>
       {surveyComplete ? (
         <View style={styles.summary}>
-          <Text style={styles.title}>Survey Complete</Text>
+          <Text style={styles.title}> Goal set!</Text>
           <Text>Here is a summary of your responses:</Text>
           {questions.map((question, index) => (
             <View key={index}>
@@ -72,12 +84,23 @@ export default function CreateGoal() {
           <Text style={styles.questionText}>{questions[currentQuestion].questionText}</Text>
           <View style={styles.answerSection}>
             {questions[currentQuestion].answerOptions.map((option, index) => {
-              if (option.type === 'textInput') {
+              const isSelected = selectAnswer === index;
+              const textColor = isSelected ? 'purple' : 'green';
+              if (option.type === 'textInput1') {
                 return (
                   <TextInput
                     key={index}
                     style={styles.textInput}
-                    placeholder="Your answer..."
+                    placeholder="Other:"
+                    onChangeText={(text) => handleAnswerChange(text, currentQuestion)}
+                  />
+                );
+              } else if (option.type === 'textInput2') {
+                return (
+                  <TextInput
+                    key={index}
+                    style={styles.textInput}
+                    placeholder="Amount of money:"
                     onChangeText={(text) => handleAnswerChange(text, currentQuestion)}
                   />
                 );
@@ -95,7 +118,7 @@ export default function CreateGoal() {
                   <TextInput
                     key={index}
                     style={styles.textInput}
-                    placeholder="Select a time frame"
+                    placeholder="Select a time frame (0-12 months):"
                     onChangeText={(text) => handleAnswerChange(text, currentQuestion)}
                   />
                 );
