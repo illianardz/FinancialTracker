@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import CreateGoal from './createGoal'; // Import your CreateGoal component
 
-export default function App() {
+const Stack = createNativeStackNavigator();
+
+function HomeScreen({ navigation }) {
   // State to manage button colors
   const [goalButtonPressed, setGoalButtonPressed] = useState(false);
   const [trackButtonPressed, setTrackButtonPressed] = useState(false);
@@ -17,7 +22,7 @@ export default function App() {
           style={[styles.button, goalButtonPressed ? styles.buttonPressed : null]}
           onPressIn={() => setGoalButtonPressed(true)}
           onPressOut={() => setGoalButtonPressed(false)}
-          onPress={() => alert('Create Goal')}
+          onPress={() => navigation.navigate('CreateGoal')}
         >
           <Text style={styles.buttonText}>CREATE GOAL</Text>
         </TouchableOpacity>
@@ -45,6 +50,17 @@ export default function App() {
         <Text style={styles.navText}>Plans</Text>
       </View>
     </SafeAreaView>
+  );
+}
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="CreateGoal" component={CreateGoal} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
@@ -98,6 +114,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
-
-
