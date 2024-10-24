@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 
 export default function CreateGoal() {
+  // Defines questions and answers
   const questions = [
     {
       questionText: 'Set a new goal!',
@@ -32,6 +33,7 @@ export default function CreateGoal() {
     },
   ];
 
+  // State variables to manage progress and user responses
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({});
   const [surveyComplete, setSurveyComplete] = useState(false);
@@ -43,6 +45,7 @@ export default function CreateGoal() {
     setAnswers(newAnswers);
   };
 
+  // Handle radio button selection
   const handleRadioSelect = (answerText, questionIndex, optionIndex) => {
     handleAnswerChange(answerText, questionIndex);
     setSelectAnswer((prev) => ({ ...prev, [questionIndex]: optionIndex }));
@@ -60,13 +63,14 @@ export default function CreateGoal() {
   // Move to the previous question
   const handlePrevious = () => {
     if (currentQuestion > 0) {
-      setCurrentQuestion(currentQuestion - 1);
+      setCurrentQuestion(currentQuestion - 1); // decrement question index
     }
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {surveyComplete ? (
+        // Display summary if the survey is complete
         <View style={styles.summary}>
           <Text style={styles.title}>Goal set!</Text>
           <Text>Here is a summary of your responses:</Text>
@@ -74,17 +78,18 @@ export default function CreateGoal() {
             index > 0 && (
             <View key={index}>
               <Text style={styles.questionText}>{question.questionText}</Text>
-              <Text>{answers[index] || 'No answer'}</Text>
+              <Text>{answers[index] || 'No answer'}</Text> {/*Display answer or no answer*/}
             </View>
           )))}
         </View>
       ) : (
+        // Display current question and options
         <View style={styles.slide}>
           <Text style={styles.questionText}>{questions[currentQuestion].questionText}</Text>
           <View style={styles.answerSection}>
             {questions[currentQuestion].answerOptions.map((option, index) => {
-              const isSelected = selectAnswer[currentQuestion] === index; // Move this line inside the map function
-              const textColor = isSelected ? 'purple' : 'green';
+              const isSelected = selectAnswer[currentQuestion] === index; 
+              const textColor = isSelected ? 'purple' : 'green'; // Change text color based on selection
 
               if (option.type === 'textInput1') {
                 return (
@@ -129,7 +134,7 @@ export default function CreateGoal() {
                   </View>
                 );
               }
-              return null; // Return null if no matching type
+              return null; 
             })}
           </View>
           <View style={styles.navigationButtons}>
@@ -150,6 +155,7 @@ export default function CreateGoal() {
   );
 }
 
+// Define styles for component
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -223,11 +229,11 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: 'row',
-    alignItems: 'center', // Align label and input vertically
+    alignItems: 'center', 
     marginBottom: 10,
   },
   labelText: {
-    marginRight: 10, // Space between label and input
+    marginRight: 10, 
     fontSize: 16,
   },
 });
