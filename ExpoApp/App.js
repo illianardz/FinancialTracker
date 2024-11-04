@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-na
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CreateGoal from './createGoal'; // Import your CreateGoal component
+import TrackGoals from './trackGoals';
+import CustomPlan from './customPlan';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,7 +32,7 @@ function HomeScreen({ navigation }) {
           style={[styles.button, trackButtonPressed ? styles.buttonPressed : null]}
           onPressIn={() => setTrackButtonPressed(true)}
           onPressOut={() => setTrackButtonPressed(false)}
-          onPress={() => alert('Track Goals')}
+          onPress={() => navigation.navigate('TrackGoals')}
         >
           <Text style={styles.buttonText}>TRACK GOALS</Text>
         </TouchableOpacity>
@@ -38,7 +40,7 @@ function HomeScreen({ navigation }) {
           style={[styles.button, planButtonPressed ? styles.buttonPressed : null]}
           onPressIn={() => setPlanButtonPressed(true)}
           onPressOut={() => setPlanButtonPressed(false)}
-          onPress={() => alert('Custom Plan')}
+          onPress={() => navigation.navigate('CustomPlan')}
         >
           <Text style={styles.buttonText}>CUSTOM PLAN</Text>
         </TouchableOpacity>
@@ -59,6 +61,8 @@ export default function App() {
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="CreateGoal" component={CreateGoal} />
+        <Stack.Screen name="TrackGoals" component={TrackGoals} />
+        <Stack.Screen name="CustomPlan" component={CustomPlan} />
       </Stack.Navigator>
     </NavigationContainer>
   );
