@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import CreateGoal from './createGoal'; // Import your CreateGoal component
+import CreateGoal from './createGoal'; 
 import TrackGoals from './trackGoals';
 import CustomPlan from './customPlan';
 
@@ -60,9 +60,9 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="CreateGoal" component={CreateGoal} />
-        <Stack.Screen name="TrackGoals" component={TrackGoals} />
-        <Stack.Screen name="CustomPlan" component={CustomPlan} />
+        <Stack.Screen name="CreateGoal" component={CreateGoal} options={{title: 'Create Goals'}}/>
+        <Stack.Screen name="TrackGoals" component={TrackGoals} options={{title: 'Track Goals'}} />
+        <Stack.Screen name="CustomPlan" component={CustomPlan} options={{title: 'Custom Plan'}} />
       </Stack.Navigator>
     </NavigationContainer>
   );
