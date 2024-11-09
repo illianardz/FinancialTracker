@@ -46,7 +46,7 @@ export default function CreateGoal() {
   const[goalAmount, setGoalAmount] = useState('');
   const[timeFrame, setTimeFrame] = useState('');
   const[goalDesc, setGoalDesc] = useState('');
-
+  
   //send answer outputs to goal tracker
   const goalCreate = () => {
     const newGoal = {
@@ -130,7 +130,7 @@ export default function CreateGoal() {
               } else if (option.type === 'textInput2') {
                 return (
                   <View key={index} style={styles.inputContainer}>
-                    <Text style={styles.labelText}>Amount of money(in dollars):</Text>
+                    <Text style={styles.labelText}>Amount of Money (in dollars):</Text>
                     <TextInput
                       style={styles.textInput}
                       onChangeText={(text) => handleAnswerChange(text, currentQuestion)}
@@ -155,7 +155,7 @@ export default function CreateGoal() {
               } else if (option.type === 'textInput3') {
                 return (
                   <View key={index} style={styles.inputContainer}>
-                    <Text style={styles.labelText}>Select a time frame(in months):</Text>
+                    <Text style={styles.labelText}>Target Time Frame (in months):</Text>
                     <TextInput
                       style={styles.textInput}
                       onChangeText={(text) => handleAnswerChange(text, currentQuestion)}
@@ -166,18 +166,18 @@ export default function CreateGoal() {
               return null; 
             })}
           </View>
-          <View style={styles.navigationButtons}>
-            {currentQuestion > 0 && (
-              <TouchableOpacity onPress={handlePrevious}>
-                <Text style={styles.buttonText}>Back</Text>
-              </TouchableOpacity>
-            )}
-            <TouchableOpacity onPress={handleNext}>
-              <Text style={styles.buttonText}>
-                {currentQuestion === 0 ? 'Click start to Continue!' : currentQuestion === questions.length - 1 ? 'Confirm' : 'Next'}
-              </Text>
-            </TouchableOpacity>
-          </View>
+          <View style={currentQuestion === 0 ? styles.centeredButton : styles.navigationButtons}>
+  {currentQuestion > 0 && (
+    <TouchableOpacity onPress={handlePrevious}>
+      <Text style={styles.buttonText}>Back</Text>
+    </TouchableOpacity>
+  )}
+  <TouchableOpacity onPress={handleNext}>
+    <Text style={styles.buttonText}>
+      {currentQuestion === 0 ? 'Start!' : currentQuestion === questions.length - 1 ? 'Confirm' : 'Next'}
+    </Text>
+  </TouchableOpacity>
+  </View>
         </View>
       )}
     </ScrollView>
@@ -240,13 +240,27 @@ const styles = StyleSheet.create({
   },
   navigationButtons: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
+    marginTop: 20,
+    width: '100%',
+  },
+  centeredButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',  // Center the buttons when only one button is shown (Start)
+    width: '100%',  
+    marginTop: 20,  
   },
   buttonText: {
     color: '#2C2C2C',
+    backgroundColor: '#B098A4',
+    borderRadius: 25,
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    fontWeight: 'bold',
     borderWidth: 2, 
-    fontSize: 18,
-    padding: 10,
+    textAlign: 'center',
+    marginVertical: 10,
+    fontSize: 22,
   },
   multOption: {
     flexDirection: 'row',
@@ -281,6 +295,7 @@ const styles = StyleSheet.create({
   labelText: {
     marginRight: 10, 
     fontSize: 18,
+    fontWeight: 'bold',
   },
   goalCreation: {
     flex: 1,
