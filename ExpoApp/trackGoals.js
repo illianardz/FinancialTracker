@@ -112,13 +112,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#f4f4f4',
+    backgroundColor: '#E5EBEA',
   },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
     textAlign: 'center',
+    backgroundColor: '#B098A4',
+    padding: 45,
   },
   goalsRow: {
     flexDirection: 'row',
@@ -156,11 +158,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
+    color: '#2C2C2C',
   },
   goalTotal: {
     fontSize: 16,
     marginBottom: 10,
     textAlign: 'center',
+    color: '#2C2C2C',
   },
   goalDisplay: {
     fontSize: 18,
@@ -178,7 +182,7 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     width: '100%',
-    backgroundColor: '#4caf50',
+    backgroundColor: '#5F8575',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
@@ -202,7 +206,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   editButton: {
-    backgroundColor: '#4caf50',
+    backgroundColor: '#2C2C2C',
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
@@ -218,7 +222,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   addButton: {
-    backgroundColor: '#4caf50',
+    backgroundColor: '#2C2C2C',
     padding: 10,
     borderRadius: 5,
     flex: 1,
@@ -226,11 +230,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   addButtonText: {
-    color: 'white',
+    color: '#E5EBEA',
     fontSize: 18,
   },
   removeButton: {
-    backgroundColor: '#f44336',
+    backgroundColor: '#9B1003',
     padding: 10,
     borderRadius: 5,
     flex: 1,
@@ -238,7 +242,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   removeButtonText: {
-    color: 'white',
+    color: '#E5EBEA',
     fontSize: 18,
   }
 });
