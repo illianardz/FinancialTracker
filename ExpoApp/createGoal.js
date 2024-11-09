@@ -266,7 +266,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
-    justifyContent: 'center', 
+    justifyContent: 'flex-start',
+    flexWrap: 'wrap',
+    width: '100%', 
   },
   multCircle: {
     height: 20,
