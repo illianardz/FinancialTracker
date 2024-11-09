@@ -5,32 +5,37 @@ export default function CreateGoal() {
   // Defines questions and answers
   const questions = [
     {
-      questionText: 'Set a New Goal!',
+      questionText: 'Set a new goal!',
       answerOptions: [{ answerText: 'Click start to continue' }],
     },
     {
       questionText: 'Is your goal short-term or long-term?',
       answerOptions: [
-        { answerText: 'Short-term', type: 'radio' },
-        { answerText: 'Long-term', type: 'radio' },
+        { answerText: 'Short-term', type: 'multiplechoice' },
+        { answerText: 'Long-term', type: 'multiplechoice' },
       ],
     },
     {
       questionText: 'What is your goal?',
       answerOptions: [
-        { answerText: 'Vacation', type: 'radio' },
-        { answerText: 'Debt Repayment', type: 'radio' },
-        { answerText: 'Emergency Fund', type: 'radio' },
+        { answerText: 'Vacation', type: 'multiplechoice' },
+        { answerText: 'Debt Repayment', type: 'multiplechoice' },
+        { answerText: 'Emergency Fund', type: 'multiplechoice' },
         { answerText: 'Other', type: 'textInput1' },
       ],
     },
     {
-      questionText: 'Goal Details',
+      questionText: 'Target Amount in dollars?',
       answerOptions: [
-        { answerText: 'Target amount: ', type: 'textInput2' },
-        { answerText: 'Target time frame: ', type: 'textInput3' },
+        { answerText: 'Target amount: ', type: 'textInput2' }
       ],
     },
+    {
+      questionText: 'Target time frame in months?',
+      answerOptions: [
+        { answerText: 'Target time frame: ', type: 'textInput3' }
+      ]
+    }
   ];
 
   // State variables to manage progress and user responses
@@ -38,6 +43,22 @@ export default function CreateGoal() {
   const [answers, setAnswers] = useState({});
   const [surveyComplete, setSurveyComplete] = useState(false);
   const [selectAnswer, setSelectAnswer] = useState({});
+  const[goalAmount, setGoalAmount] = useState('');
+  const[timeFrame, setTimeFrame] = useState('');
+  const[goalDesc, setGoalDesc] = useState('');
+
+  //send answer outputs to goal tracker
+  const goalCreate = () => {
+    const newGoal = {
+      title: answers[2] || 'New Goal',
+      progress: 0,
+      total: parseInt(answers[3]) || 10000,
+    };
+
+    addGoal(newGoal);
+
+    navigation.goBack();
+  };
 
   // Handle input change based on question type
   const handleAnswerChange = (text, questionIndex) => {
@@ -45,8 +66,8 @@ export default function CreateGoal() {
     setAnswers(newAnswers);
   };
 
-  // Handle radio button selection
-  const handleRadioSelect = (answerText, questionIndex, optionIndex) => {
+  // Handle multiple button selection
+  const handleMultSelect = (answerText, questionIndex, optionIndex) => {
     handleAnswerChange(answerText, questionIndex);
     setSelectAnswer((prev) => ({ ...prev, [questionIndex]: optionIndex }));
   };
@@ -57,6 +78,7 @@ export default function CreateGoal() {
       setCurrentQuestion(currentQuestion + 1);
     } else {
       setSurveyComplete(true);
+      goalCreate();
     }
   };
 
@@ -72,13 +94,13 @@ export default function CreateGoal() {
       {surveyComplete ? (
         // Display summary if the survey is complete
         <View style={styles.summary}>
-          <Text style={styles.title}>Goal Set!</Text>
-          <Text>Here is a summary of your responses:</Text>
+          <Text style={styles.title}>Goal set!</Text>
+          <Text style={styles.summaryCaption}>Here is a summary of your responses: </Text>
           {questions.map((question, index) => (
             index > 0 && (
             <View key={index}>
               <Text style={styles.questionText}>{question.questionText}</Text>
-              <Text>{answers[index] || 'No answer'}</Text> {/*Display answer or no answer*/}
+              <Text style={styles.answers}> {answers[index] || 'No answer'}</Text> {/*Display answer or no answer*/}
             </View>
           )))}
         </View>
@@ -89,8 +111,9 @@ export default function CreateGoal() {
           <View style={styles.answerSection}>
             {questions[currentQuestion].answerOptions.map((option, index) => {
               const isSelected = selectAnswer[currentQuestion] === index; 
-              const textColor = isSelected ? 'purple' : 'green'; // Change text color based on selection
-
+              // Change text color based on selection
+              const textColor = isSelected ? 'purple' : 'green'; 
+              //if question is text input 1
               if (option.type === 'textInput1') {
                 return (
                   <View key={index} style={styles.inputContainer}>
@@ -101,37 +124,41 @@ export default function CreateGoal() {
                     />
                   </View>
                 );
+                //if question type is text input 2
               } else if (option.type === 'textInput2') {
                 return (
                   <View key={index} style={styles.inputContainer}>
-                    <Text style={styles.labelText}>Amount of Money:</Text>
+                    <Text style={styles.labelText}>Amount of money(in dollars):</Text>
                     <TextInput
                       style={styles.textInput}
                       onChangeText={(text) => handleAnswerChange(text, currentQuestion)}
                     />
                   </View>
                 );
-              } else if (option.type === 'radio') {
+                //if question type is multiple choice
+              } else if (option.type === 'multiplechoice') {
                 return (
-                  <View style={styles.radioOption} key={index}>
+                  <View style={styles.multOption} key={index}>
                     <TouchableOpacity
-                      style={styles.radioCircle}
-                      onPress={() => handleRadioSelect(option.answerText, currentQuestion, index)}
-                    >
+                      style={styles.multCircle}
+                      onPress={() => handleMultSelect(option.answerText, currentQuestion, index)}
+                    > 
+                    {/*if choice is selected, it will be underlined*/}
                       {isSelected && <View style={styles.selectedCircle} />}
                     </TouchableOpacity>
-                    <Text style={[styles.radioText, { color: textColor }]}>{option.answerText}</Text>
+                    <Text style={[styles.multText, { color: textColor }]}>{option.answerText}</Text>
                   </View>
                 );
+                //if question is text input 3
               } else if (option.type === 'textInput3') {
                 return (
                   <View key={index} style={styles.inputContainer}>
-                    <Text style={styles.labelText}>Target Time Frame:</Text>
+                    <Text style={styles.labelText}>Select a time frame(in months):</Text>
                     <TextInput
                       style={styles.textInput}
                       onChangeText={(text) => handleAnswerChange(text, currentQuestion)}
-                  />
-                 </View>
+                    />
+                  </View>
                 );
               }
               return null; 
@@ -145,7 +172,7 @@ export default function CreateGoal() {
             )}
             <TouchableOpacity onPress={handleNext}>
               <Text style={styles.buttonText}>
-                {currentQuestion === 0 ? 'Start' : currentQuestion === questions.length - 1 ? 'Confirm' : 'Next'}
+                {currentQuestion === 0 ? 'Click start to Continue!' : currentQuestion === questions.length - 1 ? 'Confirm' : 'Next'}
               </Text>
             </TouchableOpacity>
           </View>
@@ -155,8 +182,16 @@ export default function CreateGoal() {
   );
 }
 
-// Define styles for component
+// Define styles for components
 const styles = StyleSheet.create({
+  answers:{
+    fontSize: 18,
+    textAlign: 'center'
+  },
+  summaryCaption: {
+    fontSize: 24,
+    textAlign: 'center',
+  },
   container: {
     flex: 1,
     padding: 20,
@@ -173,7 +208,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: 'bold',
   },
   questionText: {
@@ -186,7 +221,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   textInput: {
-    height: 40,
+    height: 60,
     borderColor: '#2C2C2C',
     borderWidth: 1,
     marginBottom: 10,
@@ -199,16 +234,17 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#2C2C2C',
+    borderWidth: 2, 
     fontSize: 18,
     padding: 10,
-    fontWeight: 'bold',
   },
-  radioOption: {
+  multOption: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
+    justifyContent: 'center', 
   },
-  radioCircle: {
+  multCircle: {
     height: 20,
     width: 20,
     borderRadius: 10,
@@ -224,9 +260,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: '#2C2C2C',
   },
-  radioText: {
+  multText: {
     fontSize: 18,
-    marginBottom: 10,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -235,7 +270,11 @@ const styles = StyleSheet.create({
   },
   labelText: {
     marginRight: 10, 
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 18,
   },
+  goalCreation: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems:'center'
+  }
 });
