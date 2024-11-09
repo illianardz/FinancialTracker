@@ -5,7 +5,7 @@ export default function CreateGoal() {
   // Defines questions and answers
   const questions = [
     {
-      questionText: 'Set a new goal!',
+      questionText: 'Set a New Goal!',
       answerOptions: [{ answerText: 'Click start to continue' }],
     },
     {
@@ -28,7 +28,7 @@ export default function CreateGoal() {
       questionText: 'Goal Details',
       answerOptions: [
         { answerText: 'Target amount: ', type: 'textInput2' },
-        { answerText: 'Target time frame: ', type: 'dropdown' },
+        { answerText: 'Target time frame: ', type: 'textInput3' },
       ],
     },
   ];
@@ -72,7 +72,7 @@ export default function CreateGoal() {
       {surveyComplete ? (
         // Display summary if the survey is complete
         <View style={styles.summary}>
-          <Text style={styles.title}>Goal set!</Text>
+          <Text style={styles.title}>Goal Set!</Text>
           <Text>Here is a summary of your responses:</Text>
           {questions.map((question, index) => (
             index > 0 && (
@@ -104,7 +104,7 @@ export default function CreateGoal() {
               } else if (option.type === 'textInput2') {
                 return (
                   <View key={index} style={styles.inputContainer}>
-                    <Text style={styles.labelText}>Amount of money:</Text>
+                    <Text style={styles.labelText}>Amount of Money:</Text>
                     <TextInput
                       style={styles.textInput}
                       onChangeText={(text) => handleAnswerChange(text, currentQuestion)}
@@ -123,15 +123,15 @@ export default function CreateGoal() {
                     <Text style={[styles.radioText, { color: textColor }]}>{option.answerText}</Text>
                   </View>
                 );
-              } else if (option.type === 'dropdown') {
+              } else if (option.type === 'textInput3') {
                 return (
                   <View key={index} style={styles.inputContainer}>
-                    <Text style={styles.labelText}>Select a time frame:</Text>
+                    <Text style={styles.labelText}>Target Time Frame:</Text>
                     <TextInput
                       style={styles.textInput}
                       onChangeText={(text) => handleAnswerChange(text, currentQuestion)}
-                    />
-                  </View>
+                  />
+                 </View>
                 );
               }
               return null; 
@@ -201,12 +201,12 @@ const styles = StyleSheet.create({
     color: '#2C2C2C',
     fontSize: 18,
     padding: 10,
+    fontWeight: 'bold',
   },
   radioOption: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
-    justifyContent: 'center', 
   },
   radioCircle: {
     height: 20,
@@ -226,6 +226,7 @@ const styles = StyleSheet.create({
   },
   radioText: {
     fontSize: 18,
+    marginBottom: 10,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -235,5 +236,6 @@ const styles = StyleSheet.create({
   labelText: {
     marginRight: 10, 
     fontSize: 16,
+    fontWeight: 'bold',
   },
 });
