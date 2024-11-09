@@ -91,6 +91,8 @@ export default function CreateGoal() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.header}>Create Your Goal</Text>
+      
       {surveyComplete ? (
         // Display summary if the survey is complete
         <View style={styles.summary}>
@@ -184,6 +186,14 @@ export default function CreateGoal() {
 
 // Define styles for components
 const styles = StyleSheet.create({
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+    backgroundColor: '#B098A4',
+    padding: 45,
+  },
   answers:{
     fontSize: 18,
     textAlign: 'center'
