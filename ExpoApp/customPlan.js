@@ -66,21 +66,21 @@ export default function CustomPlan() {
         return (
             <View style={styles.centered}>
                 <Text style={styles.title}>FINANCIAL HEALTH SUMMARY</Text>
-                <Text>Total Income (monthly): {Number(salary) + Number(additionalIncome)}</Text>
-                <Text>Expenses (monthly): {totalExpenses}</Text>
-                <Text>Net Savings (monthly): {(Number(salary) + Number(additionalIncome)) - totalExpenses}</Text>
-                <Text>Investment Balance: {Number(totalSavings) + Number(retirementAccounts) + Number(stocksAndBonds) + Number(mutualFunds)}</Text>
+                <Text style={styles.label}>Total Income (monthly): {Number(salary) + Number(additionalIncome)}</Text>
+                <Text style={styles.label}>Expenses (monthly): {totalExpenses}</Text>
+                <Text style={styles.label}>Net Savings (monthly): {(Number(salary) + Number(additionalIncome)) - totalExpenses}</Text>
+                <Text style={styles.label}>Investment Balance: {Number(totalSavings) + Number(retirementAccounts) + Number(stocksAndBonds) + Number(mutualFunds)}</Text>
 
                 <Text style={styles.title}>BUDGET BREAKDOWN</Text>
-                <Text>Housing: {formatPercentage(housing, totalExpenses)}</Text>
-                <Text>Utilities: {formatPercentage(utilities, totalExpenses)}</Text>
-                <Text>Food: {formatPercentage(food, totalExpenses)}</Text>
-                <Text>Transportation: {formatPercentage(transportation, totalExpenses)}</Text>
-                <Text>Insurance: {formatPercentage(insurance, totalExpenses)}</Text>
-                <Text>Entertainment: {formatPercentage(entertainment, totalExpenses)}</Text>
-                <Text>Debt Payments: {formatPercentage(debtPayments, totalExpenses)}</Text>
-                <Text>Savings/Investments: {formatPercentage(savingsInvestments, totalExpenses)}</Text>
-                <Text>Other Expenses: {formatPercentage(otherExpenses, totalExpenses)}</Text>
+                <Text style={styles.label}>Housing: {formatPercentage(housing, totalExpenses)}</Text>
+                <Text style={styles.label}>Utilities: {formatPercentage(utilities, totalExpenses)}</Text>
+                <Text style={styles.label}>Food: {formatPercentage(food, totalExpenses)}</Text>
+                <Text style={styles.label}>Transportation: {formatPercentage(transportation, totalExpenses)}</Text>
+                <Text style={styles.label}>Insurance: {formatPercentage(insurance, totalExpenses)}</Text>
+                <Text style={styles.label}>Entertainment: {formatPercentage(entertainment, totalExpenses)}</Text>
+                <Text style={styles.label}>Debt Payments: {formatPercentage(debtPayments, totalExpenses)}</Text>
+                <Text style={styles.label}>Savings/Investments: {formatPercentage(savingsInvestments, totalExpenses)}</Text>
+                <Text style={styles.label}>Other Expenses: {formatPercentage(otherExpenses, totalExpenses)}</Text>
             </View>
         );
     };
@@ -231,29 +231,29 @@ export default function CustomPlan() {
             <>
                 <Text style={styles.title}>Financial Plan Review</Text>
                 <Text style={styles.subtitle}>INCOME SUMMARY</Text>
-                <Text>Salary: {salary}</Text>
-                <Text>Additional Income: {additionalIncome}</Text>
+                <Text style={styles.label}>Salary: {salary}</Text>
+                <Text style={styles.label}>Additional Income: {additionalIncome}</Text>
     
                 <Text style={styles.subtitle}>EXPENSES SUMMARY</Text>
-                <Text>Housing: {housing}</Text>
-                <Text>Utilities: {utilities}</Text>
-                <Text>Food: {food}</Text>
-                <Text>Transportation: {transportation}</Text>
-                <Text>Insurance: {insurance}</Text>
-                <Text>Entertainment: {entertainment}</Text>
-                <Text>Debt Payments: {debtPayments}</Text>
-                <Text>Savings/Investments: {savingsInvestments}</Text>
-                <Text>Other Expenses: {otherExpenses}</Text>
+                <Text style={styles.label}>Housing: {housing}</Text>
+                <Text style={styles.label}>Utilities: {utilities}</Text>
+                <Text style={styles.label}>Food: {food}</Text>
+                <Text style={styles.label}>Transportation: {transportation}</Text>
+                <Text style={styles.label}>Insurance: {insurance}</Text>
+                <Text style={styles.label}>Entertainment: {entertainment}</Text>
+                <Text style={styles.label}>Debt Payments: {debtPayments}</Text>
+                <Text style={styles.label}>Savings/Investments: {savingsInvestments}</Text>
+                <Text style={styles.label}>Other Expenses: {otherExpenses}</Text>
     
                 <Text style={styles.subtitle}>SAVINGS/INVESTMENT SUMMARY</Text>
-                <Text>Total Savings: {totalSavings}</Text>
-                <Text>Retirement Accounts: {retirementAccounts}</Text>
-                <Text>Stocks and Bonds: {stocksAndBonds}</Text>
-                <Text>Mutual Funds: {mutualFunds}</Text>
-                <Text>Short-Term Goals: {shortTermGoals}</Text>
-                <Text>Long-Term Goals: {longTermGoals}</Text>
-                <Text>Financial Loss Tolerance: {financialLossTolerance}</Text>
-                <Text>Safety Net: {safetyNet}</Text>
+                <Text style={styles.label}>Total Savings: {totalSavings}</Text>
+                <Text style={styles.label}>Retirement Accounts: {retirementAccounts}</Text>
+                <Text style={styles.label}>Stocks and Bonds: {stocksAndBonds}</Text>
+                <Text style={styles.label}>Mutual Funds: {mutualFunds}</Text>
+                <Text style={styles.label}>Short-Term Goals: {shortTermGoals}</Text>
+                <Text style={styles.label}>Long-Term Goals: {longTermGoals}</Text>
+                <Text style={styles.label}>Financial Loss Tolerance: {financialLossTolerance}</Text>
+                <Text style={styles.label}>Safety Net: {safetyNet}</Text>
     
                 <TouchableOpacity style={styles.button} onPress={handleGeneratePlan}>
                     <Text style={styles.buttonText}>GENERATE PLAN</Text>
@@ -285,19 +285,20 @@ export default function CustomPlan() {
             flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
-            padding: 20
+            padding: 20,
         },
         title: {
             fontSize: 22,
             fontWeight: 'bold',
             marginTop: 20,
             marginBottom: 10,
-            textAlign: 'center'
+            textAlign: 'center',
         },
         subtitle: {
             fontSize: 16,
             marginTop: 10,
-            textAlign: 'center'
+            textAlign: 'center',
+            fontWeight: 'bold',
         },
         inputContainer: {
             flexDirection: 'row',
@@ -311,11 +312,13 @@ export default function CustomPlan() {
         },
         input: {
             flex: 1,
-            height: 40,
+            height: 35,
             borderWidth: 1,
-            padding: 10,
+            padding: 8,
             fontSize: 16,
             borderColor: '#ccc',
+            borderRadius: 5,
+            width: '50%',
         },
         button: {
             backgroundColor: '#2C2C2C',
@@ -358,19 +361,22 @@ export default function CustomPlan() {
             marginBottom: 15,
             textAlign: "center",
             fontSize: 18,
-            fontWeight: 'bold'
+            fontWeight: 'bold',
         },
         modalSubtitle: {
             marginBottom: 15,
             textAlign: "center",
             fontSize: 15,
-            fontWeight: 'bold'
+            fontWeight: 'bold',
         },
         modalText: {
             marginBottom: 15,
-            textAlign: "center"
+            textAlign: 'center',
         },
         buttonClose: {
             backgroundColor: "#2C2C2C",
+        },
+        label: {
+            fontWeight: 'bold',
         }
     });
