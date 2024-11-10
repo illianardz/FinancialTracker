@@ -19,7 +19,7 @@ export default function TrackGoals({ navigation }) {
 
   // Add a new goal
   const addGoal = (newGoal) => {
-    setGoals((prevGoals) => [...prevGoals, newGoal]);  // Update goals with the new goal(s)
+    setGoals((prevGoals) => [...prevGoals, newGoal]);  
   };
 
   // Remove goal by index
