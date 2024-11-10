@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, ActivityIndicator } from 'react-native';
+import {
+  StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView,
+  ActivityIndicator, Modal, Alert
+} from 'react-native';
 
 export default function CustomPlan() {
-    // State for page navigation and loading state
     const [currentPage, setCurrentPage] = useState('incomeExpenses');
     const [loading, setLoading] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [savingsModalVisible, setSavingsModalVisible] = useState(false);
 
-    // States for Income and Expenses
     const [salary, setSalary] = useState('');
     const [additionalIncome, setAdditionalIncome] = useState('');
     const [housing, setHousing] = useState('');
@@ -19,7 +22,6 @@ export default function CustomPlan() {
     const [savingsInvestments, setSavingsInvestments] = useState('');
     const [otherExpenses, setOtherExpenses] = useState('');
 
-    // States for Savings and Investments
     const [totalSavings, setTotalSavings] = useState('');
     const [retirementAccounts, setRetirementAccounts] = useState('');
     const [stocksAndBonds, setStocksAndBonds] = useState('');
@@ -50,10 +52,10 @@ export default function CustomPlan() {
         </View>
     );
 
-    const formatPercentage = (value) => {
-        // Check if the value is empty, undefined, or zero
+    const formatPercentage = (value, total) => {
         const numValue = Number(value);
-        return numValue === 0 ? "Not Applicable" : `${((numValue / totalExpenses) * 100).toFixed(2)}%`;
+        if (total === 0) return "0%";  // Return 0% if total expenses are zero to avoid division by zero
+        return `${((numValue / total) * 100).toFixed(2)}%`;
     };
 
     const FinancialHealthSummaryView = () => {
@@ -70,191 +72,304 @@ export default function CustomPlan() {
                 <Text>Investment Balance: {Number(totalSavings) + Number(retirementAccounts) + Number(stocksAndBonds) + Number(mutualFunds)}</Text>
 
                 <Text style={styles.title}>BUDGET BREAKDOWN</Text>
-                <Text>Housing: {formatPercentage(housing)}</Text>
-                <Text>Utilities: {formatPercentage(utilities)}</Text>
-                <Text>Food: {formatPercentage(food)}</Text>
-                <Text>Transportation: {formatPercentage(transportation)}</Text>
-                <Text>Insurance: {formatPercentage(insurance)}</Text>
-                <Text>Entertainment: {formatPercentage(entertainment)}</Text>
-                <Text>Debt Payments: {formatPercentage(debtPayments)}</Text>
-                <Text>Savings/Investments: {formatPercentage(savingsInvestments)}</Text>
-                <Text>Other Expenses: {formatPercentage(otherExpenses)}</Text>
-
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}>SAVE PLAN</Text>
-                </TouchableOpacity>
+                <Text>Housing: {formatPercentage(housing, totalExpenses)}</Text>
+                <Text>Utilities: {formatPercentage(utilities, totalExpenses)}</Text>
+                <Text>Food: {formatPercentage(food, totalExpenses)}</Text>
+                <Text>Transportation: {formatPercentage(transportation, totalExpenses)}</Text>
+                <Text>Insurance: {formatPercentage(insurance, totalExpenses)}</Text>
+                <Text>Entertainment: {formatPercentage(entertainment, totalExpenses)}</Text>
+                <Text>Debt Payments: {formatPercentage(debtPayments, totalExpenses)}</Text>
+                <Text>Savings/Investments: {formatPercentage(savingsInvestments, totalExpenses)}</Text>
+                <Text>Other Expenses: {formatPercentage(otherExpenses, totalExpenses)}</Text>
             </View>
         );
     };
-  
-    const IncomeExpensesView = () => (
-        <>
-            <Text style={styles.title}>Enter Monthly Income:</Text>
-            {[['Salary', salary, setSalary], ['Additional Income', additionalIncome, setAdditionalIncome]].map(([label, value, setValue], index) => (
-                <View style={styles.inputContainer} key={index}>
-                    <Text style={styles.label}>{label}:</Text>
-                    <TextInput style={styles.input} keyboardType="numeric" value={value} onChangeText={setValue} />
+
+    const InfoModal = () => (
+        <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+                Alert.alert("Modal has been closed.");
+                setModalVisible(!modalVisible);
+            }}
+        >
+            <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                    <Text style={styles.modalTitle}>Income and Expenses</Text>
+                    <Text style={styles.Subtitle}>Income:</Text>
+                    <Text style={styles.modalText}>
+                        The total money you receive from various sources such as wages, business profits, investment returns, and other earnings.
+                        It represents your financial inflow.
+                    </Text>
+                    <Text style={styles.Subtitle}>Expenses:</Text>
+                    <Text style={styles.modalText}>
+                        All the costs incurred in earning income and maintaining a standard of living or business operations.
+                        This includes rent, utilities, supplies, and other necessary payments. Expenses represent your financial outflow.
+                    </Text>
+                    <TouchableOpacity
+                        style={[styles.button, styles.buttonClose]}
+                        onPress={() => setModalVisible(false)}
+                    >
+                        <Text style={styles.buttonText}>Close</Text>
+                    </TouchableOpacity>
                 </View>
-            ))}
-            <Text style={styles.title}>Enter Monthly Expenses:</Text>
-            {[
-                ['Housing', housing, setHousing],
-                ['Utilities', utilities, setUtilities],
-                ['Food', food, setFood],
-                ['Transportation', transportation, setTransportation],
-                ['Insurance', insurance, setInsurance],
-                ['Entertainment', entertainment, setEntertainment],
-                ['Debt Payments', debtPayments, setDebtPayments],
-                ['Savings/Investments', savingsInvestments, setSavingsInvestments],
-                ['Other Expenses', otherExpenses, setOtherExpenses]
-            ].map(([label, value, setValue], index) => (
-                <View style={styles.inputContainer} key={index}>
-                    <Text style={styles.label}>{label}:</Text>
-                    <TextInput style={styles.input} keyboardType="numeric" value={value} onChangeText={setValue} />
+            </View>
+        </Modal>
+    );
+
+    const SavingsInfoModal = () => (
+        <Modal
+            animationType="slide"
+            transparent={true}
+            visible={savingsModalVisible}
+            onRequestClose={() => {
+                Alert.alert("Modal has been closed.");
+                setSavingsModalVisible(!savingsModalVisible);
+            }}
+        >
+            <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                    <Text style={styles.modalTitle}>About Savings and Investments</Text>
+                    <Text style={styles.modalSubtitle}>Total Savings:</Text>
+                    <Text style={styles.modalText}>
+                        The sum of all money saved across different accounts and liquid assets that can be accessed easily.
+                    </Text>
+                    <Text style={styles.modalSubtitle}>Retirement Accounts:</Text>
+                    <Text style={styles.modalText}>
+                        Specialized accounts for saving for retirement that offer tax advantages. Common types include 401(k)s and IRAs.
+                    </Text>
+                    <Text style={styles.modalSubtitle}>Stocks:</Text>
+                    <Text style={styles.modalText}>
+                        Equity investments that represent ownership in a company, with potential for high returns but higher risk.
+                    </Text>
+                    <Text style={styles.modalSubtitle}>Bonds:</Text>
+                    <Text style={styles.modalText}>
+                        Loans from investors to borrowers like governments or corporations, offering lower risk but also lower returns compared to stocks.
+                    </Text>
+                    <Text style={styles.modalSubtitle}>Mutual Funds:</Text>
+                    <Text style={styles.modalText}>
+                        Investment vehicles that pool money from many investors to purchase a diversified portfolio of securities, managed by professionals.
+                        They offer diversification with less risk than individual stocks or bonds.
+                    </Text>
+                    <TouchableOpacity
+                        style={[styles.button, styles.buttonClose]}
+                        onPress={() => setSavingsModalVisible(false)}
+                    >
+                        <Text style={styles.buttonText}>Close</Text>
+                    </TouchableOpacity>
                 </View>
-            ))}
-            <TouchableOpacity style={styles.button} onPress={() => handleNextPage('savingsInvestments')}>
-                <Text style={styles.buttonText}>Next</Text>
-            </TouchableOpacity>
-        </>
-    );
-
-    const SavingsInvestmentsView = () => (
-    <>
-        <Text style={styles.title}>Savings and Investments:</Text>
-        {[
-            ['Total Savings', totalSavings, setTotalSavings],
-            ['Retirement Accounts', retirementAccounts, setRetirementAccounts],
-            ['Stocks and Bonds', stocksAndBonds, setStocksAndBonds],
-            ['Mutual Funds', mutualFunds, setMutualFunds]
-        ].map(([label, value, setValue], index) => (
-            <View style={styles.inputContainer} key={index}>
-                <Text style={styles.label}>{label}:</Text>
-                <TextInput style={styles.input} keyboardType="numeric" value={value} onChangeText={setValue} />
             </View>
-        ))}
-        <Text style={styles.title}>Savings Goals:</Text>
-        {[
-            ['Short-Term', shortTermGoals, setShortTermGoals],
-            ['Long-Term', longTermGoals, setLongTermGoals]
-        ].map(([label, value, setValue], index) => (
-            <View style={styles.inputContainer} key={index}>
-                <Text style={styles.label}>{label}:</Text> {/* Ensure this line is corrected */}
-                <TextInput style={styles.input} keyboardType="numeric" value={value} onChangeText={setValue} />
-            </View>
-        ))}
-        <TouchableOpacity style={styles.button} onPress={() => handleNextPage('financialPlanReview')}>
-            <Text style={styles.buttonText}>Next</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => handleNextPage('incomeExpenses')}>
-            <Text style={styles.buttonText}>Back</Text>
-        </TouchableOpacity>
-    </>
-);
+        </Modal>
+        );
 
-    const FinancialPlanReviewView = () => (
-        <>
-            <Text style={styles.title}>Financial Plan Review</Text>
-            <Text style={styles.subtitle}>INCOME SUMMARY</Text>
-            <Text>Salary: {salary}</Text>
-            <Text>Additional Income: {additionalIncome}</Text>
-
-            <Text style={styles.subtitle}>EXPENSES SUMMARY</Text>
-            <Text>Housing: {housing}</Text>
-            <Text>Utilities: {utilities}</Text>
-            <Text>Food: {food}</Text>
-            <Text>Transportation: {transportation}</Text>
-            <Text>Insurance: {insurance}</Text>
-            <Text>Entertainment: {entertainment}</Text>
-            <Text>Debt Payments: {debtPayments}</Text>
-            <Text>Savings/Investments: {savingsInvestments}</Text>
-            <Text>Other Expenses: {otherExpenses}</Text>
-
-            <Text style={styles.subtitle}>SAVINGS/INVESTMENT SUMMARY</Text>
-            <Text>Total Savings: {totalSavings}</Text>
-            <Text>Retirement Accounts: {retirementAccounts}</Text>
-            <Text>Stocks and Bonds: {stocksAndBonds}</Text>
-            <Text>Mutual Funds: {mutualFunds}</Text>
-            <Text>Short-Term Goals: {shortTermGoals}</Text>
-            <Text>Long-Term Goals: {longTermGoals}</Text>
-            <Text>Financial Loss Tolerance: {financialLossTolerance}</Text>
-            <Text>Safety Net: {safetyNet}</Text>
-
-            <TouchableOpacity style={styles.button} onPress={handleGeneratePlan}>
-                <Text style={styles.buttonText}>GENERATE PLAN</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => handleNextPage('savingsInvestments')}>
-                <Text style={styles.buttonText}>Back</Text>
-            </TouchableOpacity>
-        </>
-    );
-
-    return (
-        <ScrollView style={styles.container}>
-            {loading ? <LoadingView /> :
-             currentPage === 'incomeExpenses' ? <IncomeExpensesView /> :
-             currentPage === 'savingsInvestments' ? <SavingsInvestmentsView /> :
-             currentPage === 'financialPlanReview' ? <FinancialPlanReviewView /> :
-             <FinancialHealthSummaryView />}
-        </ScrollView>
-    );
-}
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 20,
-        backgroundColor: '#fff',
-    },
-    centered: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 20
-    },
-    title: {
-        fontSize: 22,
-        fontWeight: 'bold',
-        marginTop: 20,
-        marginBottom: 10,
-        textAlign: 'center'
-    },
-    subtitle: {
-        fontSize: 16,
-        marginTop: 10,
-        textAlign: 'center'
-    },
-    inputContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 12,
-    },
-    label: {
-        fontSize: 16,
-        width: 150,
-        marginRight: 10,
-    },
-    input: {
-        flex: 1,
-        height: 40,
-        borderWidth: 1,
-        padding: 10,
-        fontSize: 16,
-        borderColor: '#ccc',
-    },
-    button: {
-        backgroundColor: '#007bff',
-        padding: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 10,
-        marginBottom: 10,
-    },
-    buttonText: {
-        color: '#ffffff',
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-});
-
-
+        const IncomeExpensesView = () => (
+            <>
+                <InfoModal />
+                <Text style={styles.title}>Enter Monthly Income:</Text>
+                {[['Salary', salary, setSalary], ['Additional Income', additionalIncome, setAdditionalIncome]].map(([label, value, setValue], index) => (
+                    <View style={styles.inputContainer} key={index}>
+                        <Text style={styles.label}>{label}:</Text>
+                        <TextInput style={styles.input} keyboardType="numeric" value={value} onChangeText={setValue} />
+                    </View>
+                ))}
+                <Text style={styles.title}>Enter Monthly Expenses:</Text>
+                {[
+                    ['Housing', housing, setHousing],
+                    ['Utilities', utilities, setUtilities],
+                    ['Food', food, setFood],
+                    ['Transportation', transportation, setTransportation],
+                    ['Insurance', insurance, setInsurance],
+                    ['Entertainment', entertainment, setEntertainment],
+                    ['Debt Payments', debtPayments, setDebtPayments],
+                    ['Savings/Investments', savingsInvestments, setSavingsInvestments],
+                    ['Other Expenses', otherExpenses, setOtherExpenses]
+                ].map(([label, value, setValue], index) => (
+                    <View style={styles.inputContainer} key={index}>
+                        <Text style={styles.label}>{label}:</Text>
+                        <TextInput style={styles.input} keyboardType="numeric" value={value} onChangeText={setValue} />
+                    </View>
+                ))}
+                <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}>
+                    <Text style={styles.buttonText}>Learn More</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={() => handleNextPage('savingsInvestments')}>
+                    <Text style={styles.buttonText}>Next</Text>
+                </TouchableOpacity>
+            </>
+        );
+    
+        const SavingsInvestmentsView = () => (
+            <>
+                <SavingsInfoModal />
+                <Text style={styles.title}>Savings and Investments:</Text>
+                {[
+                    ['Total Savings', totalSavings, setTotalSavings],
+                    ['Retirement Accounts', retirementAccounts, setRetirementAccounts],
+                    ['Stocks and Bonds', stocksAndBonds, setStocksAndBonds],
+                    ['Mutual Funds', mutualFunds, setMutualFunds]
+                ].map(([label, value, setValue], index) => (
+                    <View style={styles.inputContainer} key={index}>
+                        <Text style={styles.label}>{label}:</Text>
+                        <TextInput style={styles.input} keyboardType="numeric" value={value} onChangeText={setValue} />
+                    </View>
+                ))}
+                <TouchableOpacity style={styles.button} onPress={() => setSavingsModalVisible(true)}>
+                    <Text style={styles.buttonText}>Learn More</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={() => handleNextPage('financialPlanReview')}>
+                    <Text style={styles.buttonText}>Next</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={() => handleNextPage('incomeExpenses')}>
+                    <Text style={styles.buttonText}>Back</Text>
+                </TouchableOpacity>
+            </>
+        );
+    
+        const FinancialPlanReviewView = () => (
+            <>
+                <Text style={styles.title}>Financial Plan Review</Text>
+                <Text style={styles.subtitle}>INCOME SUMMARY</Text>
+                <Text>Salary: {salary}</Text>
+                <Text>Additional Income: {additionalIncome}</Text>
+    
+                <Text style={styles.subtitle}>EXPENSES SUMMARY</Text>
+                <Text>Housing: {housing}</Text>
+                <Text>Utilities: {utilities}</Text>
+                <Text>Food: {food}</Text>
+                <Text>Transportation: {transportation}</Text>
+                <Text>Insurance: {insurance}</Text>
+                <Text>Entertainment: {entertainment}</Text>
+                <Text>Debt Payments: {debtPayments}</Text>
+                <Text>Savings/Investments: {savingsInvestments}</Text>
+                <Text>Other Expenses: {otherExpenses}</Text>
+    
+                <Text style={styles.subtitle}>SAVINGS/INVESTMENT SUMMARY</Text>
+                <Text>Total Savings: {totalSavings}</Text>
+                <Text>Retirement Accounts: {retirementAccounts}</Text>
+                <Text>Stocks and Bonds: {stocksAndBonds}</Text>
+                <Text>Mutual Funds: {mutualFunds}</Text>
+                <Text>Short-Term Goals: {shortTermGoals}</Text>
+                <Text>Long-Term Goals: {longTermGoals}</Text>
+                <Text>Financial Loss Tolerance: {financialLossTolerance}</Text>
+                <Text>Safety Net: {safetyNet}</Text>
+    
+                <TouchableOpacity style={styles.button} onPress={handleGeneratePlan}>
+                    <Text style={styles.buttonText}>GENERATE PLAN</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={() => handleNextPage('savingsInvestments')}>
+                    <Text style={styles.buttonText}>Back</Text>
+                </TouchableOpacity>
+            </>
+        );
+    
+        return (
+            <ScrollView style={styles.container}>
+                {loading ? <LoadingView /> :
+                 currentPage === 'incomeExpenses' ? <IncomeExpensesView /> :
+                 currentPage === 'savingsInvestments' ? <SavingsInvestmentsView /> :
+                 currentPage === 'financialPlanReview' ? <FinancialPlanReviewView /> :
+                 <FinancialHealthSummaryView />}
+            </ScrollView>
+        );
+    }
+    
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            padding: 20,
+            backgroundColor: '#fff',
+        },
+        centered: {
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: 20
+        },
+        title: {
+            fontSize: 22,
+            fontWeight: 'bold',
+            marginTop: 20,
+            marginBottom: 10,
+            textAlign: 'center'
+        },
+        subtitle: {
+            fontSize: 16,
+            marginTop: 10,
+            textAlign: 'center'
+        },
+        inputContainer: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginBottom: 12,
+        },
+        label: {
+            fontSize: 16,
+            width: 150,
+            marginRight: 10,
+        },
+        input: {
+            flex: 1,
+            height: 40,
+            borderWidth: 1,
+            padding: 10,
+            fontSize: 16,
+            borderColor: '#ccc',
+        },
+        button: {
+            backgroundColor: '#007bff',
+            padding: 10,
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 10,
+            marginBottom: 10,
+        },
+        buttonText: {
+            color: '#ffffff',
+            fontSize: 16,
+            fontWeight: 'bold',
+        },
+        centeredView: {
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 22
+        },
+        modalView: {
+            width: 300,
+            minHeight: 500,
+            backgroundColor: "white",
+            borderRadius: 20,
+            padding: 35,
+            alignItems: "center",
+            shadowColor: "#000",
+            shadowOffset: {
+                width: 0,
+                height: 2
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 4,
+            elevation: 5,
+            justifyContent: 'center',
+        },
+        modalTitle: {
+            marginBottom: 15,
+            textAlign: "center",
+            fontSize: 18,
+            fontWeight: 'bold'
+        },
+        modalSubtitle: {
+            marginBottom: 15,
+            textAlign: "center",
+            fontSize: 15,
+            fontWeight: 'bold'
+        },
+        modalText: {
+            marginBottom: 15,
+            textAlign: "center"
+        },
+        buttonClose: {
+            backgroundColor: "#2196F3",
+        }
+    });
