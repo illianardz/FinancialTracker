@@ -7,7 +7,7 @@ React Native is a JavaScript framework used to build cross-platform mobile appli
 - npm or yarn (comes with Node.js installation)
 - React Native CLI (Install with `npm install -g react-native-cli`)
 
-## Steps to Set Up React Native
+## Set Up React Native
 1. Install Node.js and npm
 2. Install React Native CLI globally:
 ```bash
