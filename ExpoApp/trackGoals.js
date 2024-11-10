@@ -39,14 +39,16 @@ export default function TrackGoals({ navigation }) {
     <ScrollView style={styles.container}>
       <Text style={styles.header}>Track Your Goals</Text>
 
-      //Displayed goals and progress bar
+  {/*Displayed goals and progress bar*/}
+  
       <View style={isEditing ? styles.goalsStacked : styles.goalsRow}>
         {goals.map((goal, index) => (
           <View key={index} style={isEditing ? styles.centeredGoalContainer : styles.goalContainer}>
             <Text style={styles.goalTitle}>{goal.title}:</Text>
             {isEditing ? (
               <>
-                //Edit goals 
+                {/*Edit goals*/} 
+          
                 <Text style={styles.editText}>Monetary Goal (in $): </Text>
                 <TextInput
                   style={styles.input}
@@ -55,7 +57,8 @@ export default function TrackGoals({ navigation }) {
                   value={String(goal.total)}
                   onChangeText={(text) => updateProgress(index, parseInt(text) || 0)}
                 />
-                //Updating current progress   
+                  {/*Updating current progress*/} 
+                    
                 <Text style={styles.editText}>Progress (in $): </Text>
                 <TextInput
                   style={styles.input}
@@ -64,9 +67,10 @@ export default function TrackGoals({ navigation }) {
                   value={String(goal.progress)}
                   onChangeText={(text) => updateProgress(index, parseInt(text) || 0)}
                 />
-                
+
+                    {/*Remove Goal functions*/}
+                    
                 <TouchableOpacity
-                   //Remove Goal functions
                   onPress={() => removeGoal(index)} 
                   style={styles.selectButton}
                 >
@@ -76,14 +80,17 @@ export default function TrackGoals({ navigation }) {
               </>
             ) : (
               <>
-              //Shows the progress bars
+              
+              {/*Shows the progress bars*/}
+
                 <Text style={styles.goalTotal}>{"$" + goal.total}</Text>
                 <View style={styles.boxPlot}>
                   <View
                     style={[
                       styles.progressBar,
                       {
-                        // Progress bar height is scaled to show ongoing progress
+                        
+
                         height: `${(goal.progress / goal.total) * 100}%`, 
                       },
                     ]}
@@ -97,17 +104,20 @@ export default function TrackGoals({ navigation }) {
         ))}
       </View>
 
-      //Edit/Save Button 
+{/*Edit/Save Button*/}
+
       <TouchableOpacity onPress={toggleEditMode} style={styles.editButton}>
         <Text style={styles.editButtonText}>{isEditing ? 'Save' : 'Edit Goals'}</Text>
       </TouchableOpacity>
 
-      //Back Button
+{/*Back Button*/}
+
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
         <Text style={styles.backButtonText}>Back</Text>
       </TouchableOpacity>
 
-      //Add Goal Buttons
+{/*Add Goal Buttons*/}
+
       {isEditing && (
         <View style={styles.addButtons}>
           <TouchableOpacity onPress={() => navigation.navigate('CreateGoal', { addGoal })} style={styles.addButton}>
