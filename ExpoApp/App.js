@@ -9,7 +9,7 @@ import CustomPlan from './customPlan';
 const Stack = createNativeStackNavigator();
 
 function HomeScreen({ navigation }) {
-  // State to manage button colors
+  // State to manage buttons in the menu
   const [goalButtonPressed, setGoalButtonPressed] = useState(false);
   const [trackButtonPressed, setTrackButtonPressed] = useState(false);
   const [planButtonPressed, setPlanButtonPressed] = useState(false);
