@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   selectButton: {
-    backgroundColor: '#FF4D4D',
+    backgroundColor: '#B098A4',
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
@@ -267,5 +267,6 @@ const styles = StyleSheet.create({
   selectButtonText: {
     color: '#2C2C2C',
     fontSize: 16,
+    fontWeight: 'bold',
   }
 });
