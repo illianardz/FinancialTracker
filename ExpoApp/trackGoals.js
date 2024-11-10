@@ -90,7 +90,6 @@ export default function TrackGoals({ navigation }) {
                       styles.progressBar,
                       {
                         
-                        {/*Progress bar height is scaled to show ongoing progress*/}
 
                         height: `${(goal.progress / goal.total) * 100}%`, 
                       },
