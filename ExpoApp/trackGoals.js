@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
-import CreateGoal from './createGoal';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 
 export default function TrackGoals({ navigation }) {
   const [goals, setGoals] = useState([
@@ -18,42 +17,41 @@ export default function TrackGoals({ navigation }) {
 
   // Add a new goal
   const addGoal = (newGoal) => {
-    setGoals((prevGoals) => [...prevGoals, newGoals]);
-  }
-
-  // Remove the last goal
-  const removeGoal = () => {
-    if (goals.length > 1) {
-      setGoals(goals.slice(0, -1));
-    }
+    setGoals((prevGoals) => [...prevGoals, newGoal]);  // Update goals with the new goal(s)
   };
 
-  // Update the progress for a specific goal
-  const updateProgress = (index, percentage) => {
-    const updatedGoals = goals.map((goal, i) =>
-      i === index ? { ...goal, total: parseInt(amount) || 0} : goal
-    );
+  // Remove goal by index
+  const removeGoal = (index) => {
+    const updatedGoals = goals.filter((_, i) => i !== index);
     setGoals(updatedGoals);
+  };
+
+  // Update goal progress or total
+  const updateProgress = (index, updatedValue) => {
+      const updatedGoals = [...goals];
+      updatedGoals[index] = { ...updatedGoals[index], progress: updatedValue };
+      setGoals(updatedGoals);
   };
 
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.header}>Track Your Goals</Text>
-      {/* displayed goals and progress bar */}
+
+      {/* Displayed goals and progress bar */}
       <View style={isEditing ? styles.goalsStacked : styles.goalsRow}>
         {goals.map((goal, index) => (
           <View key={index} style={isEditing ? styles.centeredGoalContainer : styles.goalContainer}>
             <Text style={styles.goalTitle}>{goal.title}:</Text>
             {isEditing ? (
               <>
-                {/*Each goals */}
+                {/* Edit goals */}
                 <Text style={styles.editText}>Monetary Goal (in $): </Text>
                 <TextInput
                   style={styles.input}
                   placeholder="Monetary Goal"
                   keyboardType="numeric"
                   value={String(goal.total)}
-                  onChangeText={(text) => updateProgress(index, text)}
+                  onChangeText={(text) => updateProgress(index, parseInt(text) || 0)}
                 />
                 <Text style={styles.editText}>Progress (in $): </Text>
                 <TextInput
@@ -61,11 +59,15 @@ export default function TrackGoals({ navigation }) {
                   keyboardType="numeric"
                   placeholder="Update progress"
                   value={String(goal.progress)}
-                  onChangeText={(text) =>
-                    updateProgress(index, parseInt(text) || 0)
-                  }
+                  onChangeText={(text) => updateProgress(index, parseInt(text) || 0)}
                 />
-                <View style={styles.divider}/>
+                <TouchableOpacity
+                  onPress={() => removeGoal(index)} // Remove goal
+                  style={styles.selectButton}
+                >
+                  <Text style={styles.selectButtonText}>Select for Removal</Text>
+                </TouchableOpacity>
+                <View style={styles.divider} />
               </>
             ) : (
               <>
@@ -93,14 +95,16 @@ export default function TrackGoals({ navigation }) {
         <Text style={styles.editButtonText}>{isEditing ? 'Save' : 'Edit Goals'}</Text>
       </TouchableOpacity>
 
+      {/* Back Button */}
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+        <Text style={styles.backButtonText}>Back</Text>
+      </TouchableOpacity>
+
       {/* Conditionally Render Add and Remove Goal Buttons */}
       {isEditing && (
         <View style={styles.addRemoveButtons}>
-          <TouchableOpacity onPress={() => navigation.navigate('CreateGoal', {addGoal})} style={styles.addButton}>
+          <TouchableOpacity onPress={() => navigation.navigate('CreateGoal', { addGoal })} style={styles.addButton}>
             <Text style={styles.addButtonText}>Add Goal</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={removeGoal} style={styles.removeButton}>
-            <Text style={styles.removeButtonText}>Remove Goal</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -108,10 +112,11 @@ export default function TrackGoals({ navigation }) {
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 10,
     backgroundColor: '#E5EBEA',
   },
   header: {
@@ -124,34 +129,32 @@ const styles = StyleSheet.create({
   },
   goalsRow: {
     flexDirection: 'row',
-    flexWrap: 'wrap', 
-    // wrap for goal tubes when space is limited
+    flexWrap: 'wrap',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
   },
   goalsStacked: {
-    flexDirection: 'column', // Stack goals vertically when editing
-    justifyContent: 'center', // Center the content vertically
-    alignItems: 'center', // Center the content horizontally
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   centeredGoalContainer: {
-    width: '80%', // Reduce width when editing to center goals
+    width: '80%',
     marginBottom: 20,
-    alignItems: 'center', // Center each goal inside its container
+    alignItems: 'center',
   },
   divider: {
-    border: 0,
     height: 1,
-    backgroun: '#ddd',
-    marginVertical: 20,
+    backgroundColor: '#ddd',
+    marginVertical: 10,
   },
-  editText:{
-    fontSize: 16
+  editText: {
+    fontSize: 16,
   },
   goalContainer: {
-    width: '30%', // Adjust width to allow multiple goals to fit in a row
-    marginBottom: 20, // Space between goals
-    alignItems: 'center', // Align content in the center
+    width: '30%',
+    marginBottom: 20,
+    alignItems: 'center',
   },
   goalTitle: {
     fontSize: 18,
@@ -166,14 +169,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#2C2C2C',
   },
-  goalDisplay: {
-    fontSize: 18,
-    marginBottom: 10,
-    textAlign: 'center',
-  },
   boxPlot: {
-    width: '50%', // Reduced width for the progress bar container
-    height: 200, // Fixed height for the container
+    width: '50%',
+    height: 200,
     backgroundColor: '#e0e0e0',
     borderRadius: 5,
     marginBottom: 10,
@@ -212,6 +210,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
   },
+  backButton: {
+    backgroundColor: '#2C2C2C',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  backButtonText: {
+    color: 'white',
+    fontSize: 18,
+  },
   editButtonText: {
     color: 'white',
     fontSize: 18,
@@ -234,7 +243,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   removeButton: {
-    backgroundColor: '#9B1003',
+    backgroundColor: '#2C2C2C',
     padding: 10,
     borderRadius: 5,
     flex: 1,
@@ -244,5 +253,19 @@ const styles = StyleSheet.create({
   removeButtonText: {
     color: '#E5EBEA',
     fontSize: 18,
+  },
+  selectButton: {
+    backgroundColor: '#FF4D4D',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  selectSelect: {
+    backgroundColor: 'E5EBEA'
+  },
+  selectButtonText: {
+    color: '#2C2C2C',
+    fontSize: 16,
   }
 });

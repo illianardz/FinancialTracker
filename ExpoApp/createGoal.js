@@ -1,190 +1,129 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 
-export default function CreateGoal() {
-  // Defines questions and answers
-  const questions = [
-    {
-      questionText: 'Set a new goal!',
-      answerOptions: [{ answerText: 'Click start to continue' }],
-    },
-    {
-      questionText: 'Is your goal short-term or long-term?',
-      answerOptions: [
-        { answerText: 'Short-term', type: 'multiplechoice' },
-        { answerText: 'Long-term', type: 'multiplechoice' },
-      ],
-    },
-    {
-      questionText: 'What is your goal?',
-      answerOptions: [
-        { answerText: 'Vacation', type: 'multiplechoice' },
-        { answerText: 'Debt Repayment', type: 'multiplechoice' },
-        { answerText: 'Emergency Fund', type: 'multiplechoice' },
-        { answerText: 'Other', type: 'textInput1' },
-      ],
-    },
-    {
-      questionText: 'Target Amount in dollars?',
-      answerOptions: [
-        { answerText: 'Target amount: ', type: 'textInput2' }
-      ],
-    },
-    {
-      questionText: 'Target time frame in months?',
-      answerOptions: [
-        { answerText: 'Target time frame: ', type: 'textInput3' }
-      ]
-    }
-  ];
+export default function CreateGoal({ route, navigation }) {
+  const { addGoal = () => {}, existingGoals = [] } = route.params || {};
 
-  // State variables to manage progress and user responses
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState({});
-  const [surveyComplete, setSurveyComplete] = useState(false);
-  const [selectAnswer, setSelectAnswer] = useState({});
-  const[goalAmount, setGoalAmount] = useState('');
-  const[timeFrame, setTimeFrame] = useState('');
-  const[goalDesc, setGoalDesc] = useState('');
-  
-  //send answer outputs to goal tracker
-  const goalCreate = () => {
-    const newGoal = {
-      title: answers[2] || 'New Goal',
-      progress: 0,
-      total: parseInt(answers[3]) || 10000,
-    };
+  const [title, setTitle] = useState('');
+  const [progress, setProgress] = useState('');
+  const [total, setTotal] = useState('');
+  const [targetDate, setTargetDate] = useState('');
+  const [question, setQuestion] = useState(1);
 
-    addGoal(newGoal);
-
-    navigation.goBack();
-  };
-
-  // Handle input change based on question type
-  const handleAnswerChange = (text, questionIndex) => {
-    const newAnswers = { ...answers, [questionIndex]: text };
-    setAnswers(newAnswers);
-  };
-
-  // Handle multiple button selection
-  const handleMultSelect = (answerText, questionIndex, optionIndex) => {
-    handleAnswerChange(answerText, questionIndex);
-    setSelectAnswer((prev) => ({ ...prev, [questionIndex]: optionIndex }));
-  };
-
-  // Move to the next question or complete the survey
-  const handleNext = () => {
-    if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
+  // Handle adding the new goal
+  const addingGoal = () => {
+    if (title && progress && total && targetDate) {
+      const newGoal = {
+        title,
+        progress: parseInt(progress) || 0,
+        total: parseInt(total) || 0,
+        targetDate,
+      };
+      addGoal(newGoal); 
+      navigation.goBack(); 
     } else {
-      setSurveyComplete(true);
-      goalCreate();
+      console.log('Please fill in all fields.');
     }
   };
 
-  // Move to the previous question
-  const handlePrevious = () => {
-    if (currentQuestion > 0) {
-      setCurrentQuestion(currentQuestion - 1); // decrement question index
+  const nextQuestion = () => {
+    if (question === 5) {
+      addingGoal(); 
+      navigation.navigate('TrackGoals', { addGoal }); 
+    } else if (question < 5) {
+      setQuestion(question + 1);
+    }
+  };
+
+  const prevQuestion = () => {
+    if (question > 1) {
+      setQuestion(question - 1);
     }
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.header}>Create Your Goal</Text>
-      
-      {surveyComplete ? (
-        // Display summary if the survey is complete
-        <View style={styles.summary}>
-          <Text style={styles.title}>Goal set!</Text>
-          <Text style={styles.summaryCaption}>Here is a summary of your responses: </Text>
-          {questions.map((question, index) => (
-            index > 0 && (
-            <View key={index}>
-              <Text style={styles.questionText}>{question.questionText}</Text>
-              <Text style={styles.answers}> {answers[index] || 'No answer'}</Text> {/*Display answer or no answer*/}
-            </View>
-          )))}
-        </View>
-      ) : (
-        // Display current question and options
-        <View style={styles.slide}>
-          <Text style={styles.questionText}>{questions[currentQuestion].questionText}</Text>
-          <View style={styles.answerSection}>
-            {questions[currentQuestion].answerOptions.map((option, index) => {
-              const isSelected = selectAnswer[currentQuestion] === index; 
-              // Change text color based on selection
-              const textColor = isSelected ? 'purple' : 'green'; 
-              //if question is text input 1
-              if (option.type === 'textInput1') {
-                return (
-                  <View key={index} style={styles.inputContainer}>
-                    <Text style={styles.labelText}>Other:</Text>
-                    <TextInput 
-                      style={styles.textInput}
-                      onChangeText={(text) => handleAnswerChange(text, currentQuestion)} 
-                    />
-                  </View>
-                );
-                //if question type is text input 2
-              } else if (option.type === 'textInput2') {
-                return (
-                  <View key={index} style={styles.inputContainer}>
-                    <Text style={styles.labelText}>Amount of Money (in dollars):</Text>
-                    <TextInput
-                      style={styles.textInput}
-                      onChangeText={(text) => handleAnswerChange(text, currentQuestion)}
-                    />
-                  </View>
-                );
-                //if question type is multiple choice
-              } else if (option.type === 'multiplechoice') {
-                return (
-                  <View style={styles.multOption} key={index}>
-                    <TouchableOpacity
-                      style={styles.multCircle}
-                      onPress={() => handleMultSelect(option.answerText, currentQuestion, index)}
-                    > 
-                    {/*if choice is selected, it will be underlined*/}
-                      {isSelected && <View style={styles.selectedCircle} />}
-                    </TouchableOpacity>
-                    <Text style={[styles.multText, { color: textColor }]}>{option.answerText}</Text>
-                  </View>
-                );
-                //if question is text input 3
-              } else if (option.type === 'textInput3') {
-                return (
-                  <View key={index} style={styles.inputContainer}>
-                    <Text style={styles.labelText}>Target Time Frame (in months):</Text>
-                    <TextInput
-                      style={styles.textInput}
-                      onChangeText={(text) => handleAnswerChange(text, currentQuestion)}
-                    />
-                  </View>
-                );
-              }
-              return null; 
-            })}
-          </View>
-          <View style={currentQuestion === 0 ? styles.centeredButton : styles.navigationButtons}>
-  {currentQuestion > 0 && (
-    <TouchableOpacity onPress={handlePrevious}>
-      <Text style={styles.buttonText}>Back</Text>
-    </TouchableOpacity>
-  )}
-  <TouchableOpacity onPress={handleNext}>
-    <Text style={styles.buttonText}>
-      {currentQuestion === 0 ? 'Start!' : currentQuestion === questions.length - 1 ? 'Confirm' : 'Next'}
-    </Text>
-  </TouchableOpacity>
-  </View>
+      <Text style={styles.header}>Create New Goal</Text>
+
+      {/* Question steps */}
+      {question === 1 && (
+        <View style={styles.questionContainer}>
+          <Text style={styles.label}>What is your goal?</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter goal title"
+            value={title}
+            onChangeText={setTitle}
+          />
         </View>
       )}
+
+      {question === 2 && (
+        <View style={styles.questionContainer}>
+          <Text style={styles.label}>What is your goal amount (in Dollars)?</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter goal amount"
+            keyboardType="numeric"
+            value={total}
+            onChangeText={setTotal}
+          />
+        </View>
+      )}
+
+      {question === 3 && (
+        <View style={styles.questionContainer}>
+          <Text style={styles.label}>Total currently saved (in Dollars): </Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter current savings"
+            keyboardType="numeric"
+            value={progress}
+            onChangeText={setProgress}
+          />
+        </View>
+      )}
+
+      {question === 4 && (
+        <View style={styles.questionContainer}>
+          <Text style={styles.label}>Target time frame (in months):</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter target date"
+            value={targetDate}
+            onChangeText={setTargetDate}
+          />
+        </View>
+      )}
+
+      {/* Summary Section */}
+      {question === 5 && (
+        <View style={styles.summaryContainer}>
+          <Text style={styles.summaryCaption}>Goal Summary:</Text>
+          <Text style={styles.summaryText}>Title: {title}</Text>
+          <Text style={styles.summaryText}>Total: {total}</Text>
+          <Text style={styles.summaryText}>Progress: {progress}</Text>
+          <Text style={styles.summaryText}>Target Time Frame: {targetDate}</Text>
+        </View>
+      )}
+
+      {/* Navigation buttons */}
+      <View style={styles.navButtons}>
+        {question > 1 && (
+          <TouchableOpacity onPress={prevQuestion} style={styles.button}>
+            <Text style={styles.buttonText}>Previous</Text>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity onPress={nextQuestion} style={[styles.button, styles.nextButton]}>
+          <Text style={styles.buttonText}>
+            {question === 5 ? 'Finish' : 'Next'}
+          </Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 }
 
-// Define styles for components
 const styles = StyleSheet.create({
   header: {
     fontSize: 24,
@@ -193,115 +132,76 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     backgroundColor: '#B098A4',
     padding: 45,
-  },
-  answers:{
-    fontSize: 18,
-    textAlign: 'center'
-  },
-  summaryCaption: {
-    fontSize: 24,
-    textAlign: 'center',
+    color: 'white',
   },
   container: {
     flex: 1,
-    padding: 20,
+    padding: 10,
     backgroundColor: '#E5EBEA',
-    justifyContent: 'center',
   },
-  summary: {
+  questionContainer: {
+    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
-  },
-  slide: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: 'bold',
-  },
-  questionText: {
-    fontSize: 20,
-    marginBottom: 10,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  answerSection: {
-    marginBottom: 20,
-  },
-  textInput: {
-    height: 60,
-    borderColor: '#2C2C2C',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
+    marginBottom: 50,
     width: '100%',
   },
-  navigationButtons: {
+  label: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 75,
+    color: '#333',
+  },
+  input: {
+    height: 60,
+    borderColor: '#B098A4',
+    borderWidth: 1,
+    marginBottom: 20,
+    paddingHorizontal: 15,
+    width: '90%',
+    borderRadius: 10,
+    fontSize: 18,
+    backgroundColor: '#FFF',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+  },
+  summaryContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  summaryCaption: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  summaryText: {
+    fontSize: 18,
+    marginBottom: 5,
+    textAlign: 'center',
+    color: '#555',
+  },
+  button: {
+    backgroundColor: '#B098A4',
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    borderRadius: 5,
+    margin: 5,
+    width: '40%',
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontSize: 18,
+    color: 'white',
+    textAlign: 'center',
+  },
+  navButtons: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'flex-end', 
     marginTop: 20,
     width: '100%',
   },
-  centeredButton: {
-    flexDirection: 'row',
-    justifyContent: 'center',  // Center the buttons when only one button is shown (Start)
-    width: '100%',  
-    marginTop: 20,  
+  nextButton: {
+    marginLeft: 'auto', 
   },
-  buttonText: {
-    color: '#2C2C2C',
-    backgroundColor: '#B098A4',
-    borderRadius: 25,
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    fontWeight: 'bold',
-    borderWidth: 2, 
-    textAlign: 'center',
-    marginVertical: 10,
-    fontSize: 22,
-  },
-  multOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-    justifyContent: 'flex-start',
-    flexWrap: 'wrap',
-    width: '100%', 
-  },
-  multCircle: {
-    height: 20,
-    width: 20,
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: '#2C2C2C',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 10, 
-  },
-  selectedCircle: {
-    height: 10,
-    width: 10,
-    borderRadius: 5,
-    backgroundColor: '#2C2C2C',
-  },
-  multText: {
-    fontSize: 18,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center', 
-    marginBottom: 10,
-  },
-  labelText: {
-    marginRight: 10, 
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  goalCreation: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems:'center'
-  }
 });
