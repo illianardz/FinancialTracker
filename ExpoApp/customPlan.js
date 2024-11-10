@@ -318,12 +318,13 @@ export default function CustomPlan() {
             borderColor: '#ccc',
         },
         button: {
-            backgroundColor: '#007bff',
+            backgroundColor: '#2C2C2C',
             padding: 10,
             alignItems: 'center',
             justifyContent: 'center',
             marginTop: 10,
             marginBottom: 10,
+            borderRadius: 10,
         },
         buttonText: {
             color: '#ffffff',
@@ -370,6 +371,6 @@ export default function CustomPlan() {
             textAlign: "center"
         },
         buttonClose: {
-            backgroundColor: "#2196F3",
+            backgroundColor: "#2C2C2C",
         }
     });
