@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 
 export default function TrackGoals({ navigation }) {
+  //hardcoded data points in use
   const [goals, setGoals] = useState([
     { title: 'Vacation', progress: 2100, total: 3000 },
     { title: 'Debt', progress: 985, total: 5000 },
     { title: 'Emergency', progress: 4000, total: 8000 },
   ]);
 
+  //constant that checks if the 
   const [isEditing, setIsEditing] = useState(false);
 
   // Toggle edit mode for all goals
@@ -53,6 +55,7 @@ export default function TrackGoals({ navigation }) {
                   value={String(goal.total)}
                   onChangeText={(text) => updateProgress(index, parseInt(text) || 0)}
                 />
+                {/* Updating current progress */}   
                 <Text style={styles.editText}>Progress (in $): </Text>
                 <TextInput
                   style={styles.input}
@@ -61,8 +64,9 @@ export default function TrackGoals({ navigation }) {
                   value={String(goal.progress)}
                   onChangeText={(text) => updateProgress(index, parseInt(text) || 0)}
                 />
+                {/* Remove Goal functions*/}
                 <TouchableOpacity
-                  onPress={() => removeGoal(index)} // Remove goal
+                  onPress={() => removeGoal(index)} 
                   style={styles.selectButton}
                 >
                   <Text style={styles.selectButtonText}>Select for Removal</Text>
@@ -70,6 +74,7 @@ export default function TrackGoals({ navigation }) {
                 <View style={styles.divider} />
               </>
             ) : (
+              {/*Shows the progress bars*/}
               <>
                 <Text style={styles.goalTotal}>{"$" + goal.total}</Text>
                 <View style={styles.boxPlot}>
@@ -77,7 +82,8 @@ export default function TrackGoals({ navigation }) {
                     style={[
                       styles.progressBar,
                       {
-                        height: `${(goal.progress / goal.total) * 100}%`, // Scale progress bar height based on progress
+                        // Progress bar height is scaled to show ongoing progress
+                        height: `${(goal.progress / goal.total) * 100}%`, 
                       },
                     ]}
                   >
@@ -100,9 +106,9 @@ export default function TrackGoals({ navigation }) {
         <Text style={styles.backButtonText}>Back</Text>
       </TouchableOpacity>
 
-      {/* Conditionally Render Add and Remove Goal Buttons */}
+      {/*Add Goal Buttons */}
       {isEditing && (
-        <View style={styles.addRemoveButtons}>
+        <View style={styles.addButtons}>
           <TouchableOpacity onPress={() => navigation.navigate('CreateGoal', { addGoal })} style={styles.addButton}>
             <Text style={styles.addButtonText}>Add Goal</Text>
           </TouchableOpacity>
@@ -225,7 +231,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
   },
-  addRemoveButtons: {
+  addButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 20,
