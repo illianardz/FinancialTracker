@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 
 export default function CreateGoal({ route, navigation }) {
+  //reroutes the answers from the survery to the goal tracker for goal creation
   const { addGoal = () => {}, existingGoals = [] } = route.params || {};
 
   const [title, setTitle] = useState('');
@@ -26,6 +27,7 @@ export default function CreateGoal({ route, navigation }) {
     }
   };
 
+  //move to the next question
   const nextQuestion = () => {
     if (question === 5) {
       addingGoal(); 
@@ -35,6 +37,7 @@ export default function CreateGoal({ route, navigation }) {
     }
   };
 
+  //go to the previous question
   const prevQuestion = () => {
     if (question > 1) {
       setQuestion(question - 1);
@@ -45,7 +48,7 @@ export default function CreateGoal({ route, navigation }) {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.header}>Create New Goal</Text>
 
-      {/* Question steps */}
+      {/* Goal enter */}
       {question === 1 && (
         <View style={styles.questionContainer}>
           <Text style={styles.label}>What is your goal?</Text>
@@ -58,6 +61,7 @@ export default function CreateGoal({ route, navigation }) {
         </View>
       )}
 
+      {/*Goal Amount*/}
       {question === 2 && (
         <View style={styles.questionContainer}>
           <Text style={styles.label}>What is your goal amount (in Dollars)?</Text>
@@ -71,6 +75,7 @@ export default function CreateGoal({ route, navigation }) {
         </View>
       )}
 
+      {/*Total currently*/}
       {question === 3 && (
         <View style={styles.questionContainer}>
           <Text style={styles.label}>Total currently saved (in Dollars): </Text>
@@ -84,6 +89,7 @@ export default function CreateGoal({ route, navigation }) {
         </View>
       )}
 
+      {/*Target Time Frame */}
       {question === 4 && (
         <View style={styles.questionContainer}>
           <Text style={styles.label}>Target time frame (in months):</Text>
