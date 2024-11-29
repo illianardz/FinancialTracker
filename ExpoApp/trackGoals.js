@@ -3,12 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput } from 
 import App from './App';
 import styles from './styles';
 
-export default function TrackGoals({ route, navigation }) {
-  const [goals, setGoals] = useState([
-    { title: 'Vacation', progress: 2100, total: 3000 },
-    { title: 'Debt', progress: 985, total: 5000 },
-    { title: 'Emergency', progress: 4000, total: 8000 },
-  ]);
+export default function TrackGoals({ route, navigation, goals, setGoals }) {
 
   const [isEditing, setIsEditing] = useState(false);
 

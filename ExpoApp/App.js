@@ -57,13 +57,26 @@ function HomeScreen({ navigation }) {
 }
 
 export default function App() {
+  
+  const [goals, setGoals] = useState([
+    { title: 'Vacation', progress: 2100, total: 3000 },
+    { title: 'Debt', progress: 985, total: 5000 },
+    { title: 'Emergency', progress: 4000, total: 8000 },
+  ]);
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="CreateGoal" component={CreateGoal} options={{title: 'Create Goals'}}/>
-        <Stack.Screen name="TrackGoals" component={TrackGoals} options={{title: 'Track Goals'}} />
-        <Stack.Screen name="CustomPlan" component={CustomPlan} options={{title: 'Custom Plan'}} />
+        <Stack.Screen
+          name="CreateGoal" options={{ title: 'Create Goals' }}>
+          {props => <CreateGoal {...props} setGoals={setGoals} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="TrackGoals" options={{ title: 'Track Goals' }}>
+          {props => <TrackGoals {...props} goals={goals} setGoals={setGoals} />}
+        </Stack.Screen>
+        <Stack.Screen name="CustomPlan" component={CustomPlan} options={{ title: 'Custom Plan' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
