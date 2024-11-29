@@ -3,6 +3,7 @@ import {
   StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView,
   ActivityIndicator, Modal, Alert
 } from 'react-native';
+import styles from './styles';
 
 export default function CustomPlan() {
     const [currentPage, setCurrentPage] = useState('incomeExpenses');
@@ -274,109 +275,3 @@ export default function CustomPlan() {
             </ScrollView>
         );
     }
-    
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            padding: 20,
-            backgroundColor: '#fff',
-        },
-        centered: {
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: 20,
-        },
-        title: {
-            fontSize: 22,
-            fontWeight: 'bold',
-            marginTop: 20,
-            marginBottom: 10,
-            textAlign: 'center',
-        },
-        subtitle: {
-            fontSize: 16,
-            marginTop: 10,
-            textAlign: 'center',
-            fontWeight: 'bold',
-        },
-        inputContainer: {
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginBottom: 12,
-        },
-        label: {
-            fontSize: 16,
-            width: 150,
-            marginRight: 10,
-        },
-        input: {
-            flex: 1,
-            height: 35,
-            borderWidth: 1,
-            padding: 8,
-            fontSize: 16,
-            borderColor: '#ccc',
-            borderRadius: 5,
-            width: '50%',
-        },
-        button: {
-            backgroundColor: '#2C2C2C',
-            padding: 10,
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: 10,
-            marginBottom: 10,
-            borderRadius: 10,
-        },
-        buttonText: {
-            color: '#ffffff',
-            fontSize: 16,
-            fontWeight: 'bold',
-        },
-        centeredView: {
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 22
-        },
-        modalView: {
-            width: 300,
-            minHeight: 500,
-            backgroundColor: "white",
-            borderRadius: 20,
-            padding: 35,
-            alignItems: "center",
-            shadowColor: "#000",
-            shadowOffset: {
-                width: 0,
-                height: 2
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 4,
-            elevation: 5,
-            justifyContent: 'center',
-        },
-        modalTitle: {
-            marginBottom: 15,
-            textAlign: "center",
-            fontSize: 18,
-            fontWeight: 'bold',
-        },
-        modalSubtitle: {
-            marginBottom: 15,
-            textAlign: "center",
-            fontSize: 15,
-            fontWeight: 'bold',
-        },
-        modalText: {
-            marginBottom: 15,
-            textAlign: 'center',
-        },
-        buttonClose: {
-            backgroundColor: "#2C2C2C",
-        },
-        label: {
-            fontWeight: 'bold',
-        }
-    });

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { CurrentRenderContext, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import styles from './styles';
 import CreateGoal from './createGoal'; 
 import TrackGoals from './trackGoals';
 import CustomPlan from './customPlan';
@@ -67,54 +68,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#E5EBEA',
-  },
-  header: {
-    backgroundColor: '#B098A4',
-    padding: 45,
-  },
-  title: {
-    fontSize: 50,
-    color: '#2C2C2C',
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  buttonContainer: {
-    margin: 50,
-    marginTop: 60,
-    justifyContent: 'center',
-  },
-  button: {
-    backgroundColor: '#2C2C2C',
-    padding: 35,
-    alignItems: 'center',
-    marginBottom: 20,
-    borderRadius: 10,
-  },
-  buttonText: {
-    color: '#E5EBEA',
-    fontSize: 25,
-    fontWeight: 'bold',
-  },
-  buttonPressed: {
-    backgroundColor: '#7B8C7C', // New color when pressed
-  },
-  navBar: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    backgroundColor: '#45503B',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 40,
-  },
-  navText: {
-    fontSize: 16,
-    color: '#cfcfcf',
-    fontWeight: 'bold',
-  },
-});
