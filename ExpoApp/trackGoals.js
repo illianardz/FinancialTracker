@@ -96,11 +96,6 @@ export default function TrackGoals({ route, navigation }) {
         <Text style={styles.buttonText}>{isEditing ? 'Save' : 'Edit Goals'}</Text>
       </TouchableOpacity>
 
-      {/* Back Button */}
-      <TouchableOpacity onPress={() => navigation.goBack(App)} style={styles.button}>
-        <Text style={styles.buttonText}>Back</Text>
-      </TouchableOpacity>
-
       {/* Add Goal Button */}
       {isEditing && (
         <TouchableOpacity
@@ -110,6 +105,12 @@ export default function TrackGoals({ route, navigation }) {
           <Text style={styles.buttonText}>Add Goal</Text>
         </TouchableOpacity>
       )}
+
+      {/* Back Button */}
+      <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.button}>
+        <Text style={styles.buttonText}>Back</Text>
+      </TouchableOpacity>
+      
     </ScrollView>
   );
 }
