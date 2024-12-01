@@ -18,6 +18,7 @@
 3. Open the cloned Financial Tracker folder in Visual Studio Code
    - Visual Studio Code is highly recommended for running this prototype
 4. Once in VSC, open the terminal and install the dependencies:
+   - `cd ExpoApp`
    - `npm install`
    - If you have a Mac, it is recommended to also run `yarn install`
 5. You will also need to install Expo CLI locally:
