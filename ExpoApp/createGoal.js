@@ -20,6 +20,13 @@ export default function CreateGoal({ navigation }) {
 
       // Pass the new goal to TrackGoals and navigate back
       navigation.navigate('TrackGoals', { newGoal });
+
+      setQuestion(1);
+      setTitle = ('');
+      setProgress = ('');
+      setTotal = ('');
+      setTargetDate = ('');
+
     } else {
       console.log('Please fill in all fields.');
     }
@@ -28,6 +35,8 @@ export default function CreateGoal({ navigation }) {
   const nextQuestion = () => {
     if (question === 5) {
       finishGoal();
+      setQuestion(1);
+
     } else if (question < 5) {
       setQuestion(question + 1);
     }

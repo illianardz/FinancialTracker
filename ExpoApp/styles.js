@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native-web";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
     backgroundColor: '#E5EBEA',
   },
   header: {
@@ -92,7 +91,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#2C2C2C',
   },
-  goalTotal: {
+  Total: {
     fontSize: 16,
     marginBottom: 10,
     textAlign: 'center',
@@ -128,7 +127,7 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 5,
-    paddingHorizontal: 10,
+    padding: 20,
     marginBottom: 20,
     fontSize: 16,
     backgroundColor: '#FFF',
