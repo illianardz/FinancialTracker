@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 
-export default function CreateGoal({ route, navigation }) {
-  //reroutes the answers from the survery to the goal tracker for goal creation
-  const { addGoal = () => {}, existingGoals = [] } = route.params || {};
+export default function CreateGoal({ navigation }) {
 
   const [title, setTitle] = useState('');
   const [progress, setProgress] = useState('');
@@ -11,8 +9,7 @@ export default function CreateGoal({ route, navigation }) {
   const [targetDate, setTargetDate] = useState('');
   const [question, setQuestion] = useState(1);
 
-  // Handle adding the new goal
-  const addingGoal = () => {
+  const finishGoal = () => {
     if (title && progress && total && targetDate) {
       const newGoal = {
         title,
@@ -20,8 +17,13 @@ export default function CreateGoal({ route, navigation }) {
         total: parseInt(total) || 0,
         targetDate,
       };
-      addGoal(newGoal); 
-      navigation.goBack(); 
+         // Pass the new goal to TrackGoals and navigate back
+         navigation.navigate('TrackGoals', { newGoal });
+         setQuestion(1);
+         setTitle('');
+         setProgress('');
+         setTotal('');
+         setTargetDate('');
     } else {
       console.log('Please fill in all fields.');
     }
@@ -30,8 +32,8 @@ export default function CreateGoal({ route, navigation }) {
   //move to the next question
   const nextQuestion = () => {
     if (question === 5) {
-      addingGoal(); 
-      navigation.navigate('TrackGoals', { addGoal }); 
+      finishGoal();
+      setQuestion(1);
     } else if (question < 5) {
       setQuestion(question + 1);
     }
@@ -46,7 +48,7 @@ export default function CreateGoal({ route, navigation }) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.header}>Create New Goal</Text>
+      <Text style={styles.header}>Goal Setup</Text>
 
       {/* Goal enter */}
       {question === 1 && (
@@ -95,7 +97,7 @@ export default function CreateGoal({ route, navigation }) {
           <Text style={styles.label}>Target time frame (in months):</Text>
           <TextInput
             style={styles.input}
-            placeholder="Enter target date"
+            placeholder="Enter target time frame in months"
             value={targetDate}
             onChangeText={setTargetDate}
           />
@@ -107,9 +109,9 @@ export default function CreateGoal({ route, navigation }) {
         <View style={styles.summaryContainer}>
           <Text style={styles.summaryCaption}>Goal Summary:</Text>
           <Text style={styles.summaryText}>Title: {title}</Text>
-          <Text style={styles.summaryText}>Total: {total}</Text>
-          <Text style={styles.summaryText}>Progress: {progress}</Text>
-          <Text style={styles.summaryText}>Target Time Frame: {targetDate}</Text>
+          <Text style={styles.summaryText}>Total: ${total}</Text>
+          <Text style={styles.summaryText}>Progress: ${progress}</Text>
+          <Text style={styles.summaryText}>Target Time Frame: {targetDate} months</Text>
         </View>
       )}
 

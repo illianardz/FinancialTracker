@@ -1,25 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
+import App from './App';
 
-export default function TrackGoals({ navigation }) {
-  //hardcoded data points in use
+export default function TrackGoals({ route, navigation }) {
   const [goals, setGoals] = useState([
     { title: 'Vacation', progress: 2100, total: 3000 },
     { title: 'Debt', progress: 985, total: 5000 },
     { title: 'Emergency', progress: 4000, total: 8000 },
   ]);
 
-  //constant that checks if the 
   const [isEditing, setIsEditing] = useState(false);
 
-  // Toggle edit mode for all goals
+  // Handle new goals passed from the CreateGoal screen
+  useEffect(() => {
+    if (route.params?.newGoal) {
+      setGoals((prevGoals) => [...prevGoals, route.params.newGoal]);
+    }
+  }, [route.params?.newGoal]);
+
+  // Toggle edit mode
   const toggleEditMode = () => {
     setIsEditing(!isEditing);
-  };
-
-  // Add a new goal
-  const addGoal = (newGoal) => {
-    setGoals((prevGoals) => [...prevGoals, newGoal]);  
   };
 
   // Remove goal by index
@@ -29,72 +30,57 @@ export default function TrackGoals({ navigation }) {
   };
 
   // Update goal progress or total
-  const updateProgress = (index, updatedValue) => {
-      const updatedGoals = [...goals];
-      updatedGoals[index] = { ...updatedGoals[index], progress: updatedValue };
-      setGoals(updatedGoals);
+  const updateProgress = (index, key, updatedValue) => {
+    const updatedGoals = [...goals];
+    updatedGoals[index] = { ...updatedGoals[index], [key]: updatedValue };
+    setGoals(updatedGoals);
   };
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.header}>Track Your Goals</Text>
+      <Text style={styles.header}>Track Goals</Text>
 
-  {/*Displayed goals and progress bar*/}
-  
       <View style={isEditing ? styles.goalsStacked : styles.goalsRow}>
         {goals.map((goal, index) => (
           <View key={index} style={isEditing ? styles.centeredGoalContainer : styles.goalContainer}>
             <Text style={styles.goalTitle}>{goal.title}:</Text>
             {isEditing ? (
               <>
-                {/*Edit goals*/} 
-          
+                {/* Editing Goal Details */}
                 <Text style={styles.editText}>Monetary Goal (in $): </Text>
                 <TextInput
                   style={styles.input}
                   placeholder="Monetary Goal"
                   keyboardType="numeric"
                   value={String(goal.total)}
-                  onChangeText={(text) => updateProgress(index, parseInt(text) || 0)}
+                  onChangeText={(text) => updateProgress(index, 'total', parseInt(text) || 0)}
                 />
-                  {/*Updating current progress*/} 
-                    
                 <Text style={styles.editText}>Progress (in $): </Text>
                 <TextInput
                   style={styles.input}
+                  placeholder="Update Progress"
                   keyboardType="numeric"
-                  placeholder="Update progress"
                   value={String(goal.progress)}
-                  onChangeText={(text) => updateProgress(index, parseInt(text) || 0)}
+                  onChangeText={(text) => updateProgress(index, 'progress', parseInt(text) || 0)}
                 />
-
-                    {/*Remove Goal functions*/}
-                    
-                <TouchableOpacity
-                  onPress={() => removeGoal(index)} 
-                  style={styles.selectButton}
-                >
-                  <Text style={styles.selectButtonText}>Select for Removal</Text>
+                <TouchableOpacity onPress={() => removeGoal(index)} style={styles.removeButton}>
+                  <Text style={styles.removeButtonText}>Remove Goal</Text>
                 </TouchableOpacity>
                 <View style={styles.divider} />
               </>
             ) : (
               <>
-              
-              {/*Shows the progress bars*/}
-
+                {/* Displaying Goal Progress */}
                 <Text style={styles.goalTotal}>{"$" + goal.total}</Text>
                 <View style={styles.boxPlot}>
-                  <View
-                    style={[
+                  <View style={[
                       styles.progressBar,
                       {
-                        
+
 
                         height: `${(goal.progress / goal.total) * 100}%`, 
                       },
-                    ]}
-                  >
+                    ]}>
                     <Text style={styles.progressText}>{'$' + goal.progress}</Text>
                   </View>
                 </View>
@@ -104,27 +90,25 @@ export default function TrackGoals({ navigation }) {
         ))}
       </View>
 
-{/*Edit/Save Button*/}
-
+      {/* Edit/Save Button */}
       <TouchableOpacity onPress={toggleEditMode} style={styles.editButton}>
         <Text style={styles.editButtonText}>{isEditing ? 'Save' : 'Edit Goals'}</Text>
       </TouchableOpacity>
 
-{/*Back Button*/}
-
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+      {/* Add Goal Button */}
+      {isEditing && (
+        <TouchableOpacity
+          onPress={() => navigation.navigate('CreateGoal')}
+          style={styles.addButtonbutton}
+        >
+          <Text style={styles.addButtonTextuttonText}>Add Goal</Text>
+        </TouchableOpacity>
+      )}
+      {/* Back Button */}
+      <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.backButton}>
         <Text style={styles.backButtonText}>Back</Text>
       </TouchableOpacity>
-
-{/*Add Goal Buttons*/}
-
-      {isEditing && (
-        <View style={styles.addButtons}>
-          <TouchableOpacity onPress={() => navigation.navigate('CreateGoal', { addGoal })} style={styles.addButton}>
-            <Text style={styles.addButtonText}>Add Goal</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+      
     </ScrollView>
   );
 }
@@ -261,7 +245,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   removeButton: {
-    backgroundColor: '#2C2C2C',
+    backgroundColor: '#5f8575',
     padding: 10,
     borderRadius: 5,
     flex: 1,
@@ -271,6 +255,7 @@ const styles = StyleSheet.create({
   removeButtonText: {
     color: '#E5EBEA',
     fontSize: 18,
+    fontWeight: 'bold',
   },
   selectButton: {
     backgroundColor: '#5f8575',
