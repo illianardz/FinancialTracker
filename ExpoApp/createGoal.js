@@ -10,6 +10,13 @@ export default function CreateGoal({ navigation }) {
   const [targetDate, setTargetDate] = useState('');
   const [question, setQuestion] = useState(1);
 
+  const formatCurrency = (amount) => {
+    if (amount === '' || isNaN(Number(amount))) {
+        return '';
+    }
+    return `$${parseInt(amount).toLocaleString()}`;
+  };
+  
   const finishGoal = () => {
     if (title && progress && total && targetDate) {
       const newGoal = {
@@ -164,8 +171,8 @@ export default function CreateGoal({ navigation }) {
         <View style={styles.summaryContainer}>
           <Text style={styles.summaryCaption}>Goal Summary:</Text>
           <Text style={styles.summaryText}>Title: {title}</Text>
-          <Text style={styles.summaryText}>Total: ${total}</Text>
-          <Text style={styles.summaryText}>Progress: ${progress}</Text>
+          <Text style={styles.summaryText}>Total: {formatCurrency(total)}</Text>
+          <Text style={styles.summaryText}>Progress: {formatCurrency(progress)}</Text>
           <Text style={styles.summaryText}>Target Time Frame: {targetDate} months</Text>
         </View>
       )}
