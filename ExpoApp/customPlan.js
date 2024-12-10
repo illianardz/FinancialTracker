@@ -122,7 +122,7 @@ export default function CustomPlan() {
                     <TouchableOpacity
                         style={[styles.planButton, styles.planButtonClose]}
                         onPress={() => setModalVisible(false)}>
-                        <Text style={styles.planButtonClose}>Close</Text>
+                        <Text style={[styles.planButtonClose, { color: 'white' }]}>Close</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -137,7 +137,7 @@ export default function CustomPlan() {
             onRequestClose={() => setSavingsModalVisible(!savingsModalVisible)}>
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                <Text style={styles.modalTitle}>About Savings and Investments</Text>
+                    <Text style={styles.modalTitle}>About Savings and Investments</Text>
                     <Text style={styles.modalSubtitle}>Total Savings:</Text>
                     <Text style={styles.modalText}>
                         The sum of all money saved across different accounts and liquid assets that can be accessed easily.
@@ -161,13 +161,14 @@ export default function CustomPlan() {
                     </Text>
                     <TouchableOpacity
                         style={[styles.planButton, styles.planButtonClose]}
-                        onPress={() => setSavingsModalVisible(false)}>
-                        <Text style={styles.planButtonClose}>Close</Text>
+                        onPress={() => setSavingsModalVisible(false)} // Updated to setSavingsModalVisible
+                    >
+                        <Text style={[styles.planButtonClose, { color: 'white' }]}>Close</Text>
                     </TouchableOpacity>
                 </View>
             </View>
         </Modal>
-    );
+    );    
 
     const IncomeExpensesView = () => (
         <>
