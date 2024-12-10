@@ -400,6 +400,10 @@ const styles = StyleSheet.create({
     color: '#2C2C2C',
     fontWeight: 'bold',
   },
+  errorInput: {
+    borderColor: 'red',
+    borderWidth: 1
+  },
   planLabel: {
     fontWeight: 'bold',
   }

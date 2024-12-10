@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import {
-  StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView,
-  ActivityIndicator, Modal, Alert
+  StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Modal, ActivityIndicator, Alert
 } from 'react-native';
 import styles from './styles';
 
@@ -10,7 +9,7 @@ export default function CustomPlan() {
     const [loading, setLoading] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [savingsModalVisible, setSavingsModalVisible] = useState(false);
-
+    
     const [salary, setSalary] = useState('');
     const [additionalIncome, setAdditionalIncome] = useState('');
     const [housing, setHousing] = useState('');
@@ -27,12 +26,29 @@ export default function CustomPlan() {
     const [retirementAccounts, setRetirementAccounts] = useState('');
     const [stocksAndBonds, setStocksAndBonds] = useState('');
     const [mutualFunds, setMutualFunds] = useState('');
-    const [shortTermGoals, setShortTermGoals] = useState('');
-    const [longTermGoals, setLongTermGoals] = useState('');
-    const [financialLossTolerance, setFinancialLossTolerance] = useState('');
-    const [safetyNet, setSafetyNet] = useState('');
 
-    const handleNextPage = (page) => setCurrentPage(page);
+    const allFields = [
+        salary, additionalIncome, housing, utilities, food, transportation,
+        insurance, entertainment, debtPayments, savingsInvestments, otherExpenses,
+    ];
+
+    const investmentFields = [
+        totalSavings, retirementAccounts, stocksAndBonds, mutualFunds,
+    ];
+
+    const isValidInput = (input) => input.trim() !== '';
+
+    const handleNextPage = (page, validationFields) => {
+        if (validationFields.every(isValidInput)) {
+            setCurrentPage(page);
+        } else {
+            Alert.alert("Incomplete Input", "Please fill in all fields before proceeding.");
+        }
+    };
+
+    const nextPage = (page) => {
+        setCurrentPage(page);
+    };
 
     const handleGeneratePlan = () => {
         setLoading(true);
@@ -172,7 +188,17 @@ export default function CustomPlan() {
                 {[['Salary', salary, setSalary], ['Additional Income', additionalIncome, setAdditionalIncome]].map(([planLabel, value, setValue], index) => (
                     <View style={styles.planInputContainer} key={index}>
                         <Text style={styles.planLabel}>{planLabel}:</Text>
-                        <TextInput style={styles.input} keyboardType="numeric" value={value} onChangeText={setValue} />
+                        <TextInput
+                            style={[styles.planInput, !isValidInput(value) && styles.errorInput]}
+                            keyboardType="numeric"
+                            value={value}
+                            onChangeText={text => setValue(text.replace(/[^0-9]/g, ''))}
+                            onBlur={() => {
+                                if (!isValidInput(value)) {
+                                    Alert.alert("Invalid Input", "Please enter a valid numeric value.");
+                                }
+                            }}
+                        />
                     </View>
                 ))}
                 <Text style={styles.planTitle}>Enter Monthly Expenses:</Text>
@@ -189,13 +215,27 @@ export default function CustomPlan() {
                 ].map(([planLabel, value, setValue], index) => (
                     <View style={styles.planInputContainer} key={index}>
                         <Text style={styles.planLabel}>{planLabel}:</Text>
-                        <TextInput style={styles.planInput} keyboardType="numeric" value={value} onChangeText={setValue} />
+                        <TextInput
+                            style={[styles.planInput, !isValidInput(value) && styles.errorInput]}
+                            keyboardType="numeric"
+                            value={value}
+                            onChangeText={text => setValue(text.replace(/[^0-9]/g, ''))}
+                            onBlur={() => {
+                                if (!isValidInput(value)) {
+                                    Alert.alert("Invalid Input", "Please enter a valid numeric value.");
+                                }
+                            }}
+                        />
                     </View>
                 ))}
                 <TouchableOpacity style={styles.planButton} onPress={() => setModalVisible(true)}>
                     <Text style={styles.planButtonText}>Learn More</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.planButton} onPress={() => handleNextPage('savingsInvestments')}>
+                <TouchableOpacity
+                    style={[styles.planButton, { opacity: allFields.every(isValidInput) ? 1 : 0.5 }]}
+                    onPress={() => handleNextPage('savingsInvestments', allFields)}
+                    disabled={!allFields.every(isValidInput)}
+                >
                     <Text style={styles.planButtonText}>Next</Text>
                 </TouchableOpacity>
             </>
@@ -213,16 +253,30 @@ export default function CustomPlan() {
                 ].map(([planLabel, value, setValue], index) => (
                     <View style={styles.planInputContainer} key={index}>
                         <Text style={styles.planLabel}>{planLabel}:</Text>
-                        <TextInput style={styles.planInput} keyboardType="numeric" value={value} onChangeText={setValue} />
+                        <TextInput
+                            style={[styles.planInput, !isValidInput(value) && styles.errorInput]}
+                            keyboardType="numeric"
+                            value={value}
+                            onChangeText={text => setValue(text.replace(/[^0-9]/g, ''))}
+                            onBlur={() => {
+                                if (!isValidInput(value)) {
+                                    Alert.alert("Invalid Input", "Please enter a valid numeric value.");
+                                }
+                            }}
+                        />
                     </View>
                 ))}
                 <TouchableOpacity style={styles.planButton} onPress={() => setSavingsModalVisible(true)}>
                     <Text style={styles.planButtonText}>Learn More</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.planButton} onPress={() => handleNextPage('financialPlanReview')}>
+                <TouchableOpacity
+                    style={[styles.planButton, { opacity: investmentFields.every(isValidInput) ? 1 : 0.5 }]}
+                    onPress={() => handleNextPage('financialPlanReview', investmentFields)}
+                    disabled={!investmentFields.every(isValidInput)}
+                >
                     <Text style={styles.planButtonText}>Next</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.planButton} onPress={() => handleNextPage('incomeExpenses')}>
+                <TouchableOpacity style={styles.planButton} onPress={() => nextPage('incomeExpenses')}>
                     <Text style={styles.planButtonText}>Back</Text>
                 </TouchableOpacity>
             </>
@@ -251,28 +305,23 @@ export default function CustomPlan() {
                 <Text style={styles.planLabel}>Retirement Accounts: {retirementAccounts}</Text>
                 <Text style={styles.planLabel}>Stocks and Bonds: {stocksAndBonds}</Text>
                 <Text style={styles.planLabel}>Mutual Funds: {mutualFunds}</Text>
-                <Text style={styles.planLabel}>Short-Term Goals: {shortTermGoals}</Text>
-                <Text style={styles.planLabel}>Long-Term Goals: {longTermGoals}</Text>
-                <Text style={styles.planLabel}>Financial Loss Tolerance: {financialLossTolerance}</Text>
-                <Text style={styles.planLabel}>Safety Net: {safetyNet}</Text>
     
                 <TouchableOpacity style={styles.planButton} onPress={handleGeneratePlan}>
                     <Text style={styles.planButtonText}>Generate Plan</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.planButton} onPress={() => handleNextPage('savingsInvestments')}>
+                <TouchableOpacity style={styles.planButton} onPress={() => nextPage('savingsInvestments')}>
                     <Text style={styles.planButtonText}>Back</Text>
                 </TouchableOpacity>
             </>
         );
     
-        return (
-            <ScrollView style={styles.planContainer}>
-            <Text style={styles.planHeader}>Track Your Goals</Text>
-                {loading ? <LoadingView /> :
-                 currentPage === 'incomeExpenses' ? <IncomeExpensesView /> :
-                 currentPage === 'savingsInvestments' ? <SavingsInvestmentsView /> :
-                 currentPage === 'financialPlanReview' ? <FinancialPlanReviewView /> :
-                 <FinancialHealthSummaryView />}
-            </ScrollView>
-        );
-    }
+    return (
+        <ScrollView style={styles.planContainer} keyboardShouldPersistTaps='handled'>
+            {loading ? <LoadingView /> :
+             currentPage === 'incomeExpenses' ? <IncomeExpensesView /> :
+             currentPage === 'savingsInvestments' ? <SavingsInvestmentsView /> :
+             currentPage === 'financialPlanReview' ? <FinancialPlanReviewView /> :
+             <FinancialHealthSummaryView />}
+        </ScrollView>
+    );        
+}
