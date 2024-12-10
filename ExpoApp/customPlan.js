@@ -289,8 +289,8 @@ export default function CustomPlan() {
             <>
                 <Text style={styles.planTitle}>Financial Plan Review</Text>
                 <Text style={styles.subtitle}>INCOME SUMMARY</Text>
-                <Text style={styles.planplanLabel}>Salary: {salary}</Text>
-                <Text style={styles.planplanLabel}>Additional Income: {additionalIncome}</Text>
+                <Text style={styles.planLabel}>Salary: {salary}</Text>
+                <Text style={styles.planLabel}>Additional Income: {additionalIncome}</Text>
     
                 <Text style={styles.subtitle}>EXPENSES SUMMARY</Text>
                 <Text style={styles.planLabel}>Housing: {housing}</Text>
