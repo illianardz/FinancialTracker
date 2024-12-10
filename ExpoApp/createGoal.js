@@ -22,14 +22,20 @@ export default function CreateGoal({ navigation }) {
       navigation.navigate('TrackGoals', { newGoal });
       resetForm();
     } else {
-      console.log('Please fill in all fields.');
+      console.log("Please fill in all fields.");
+      alert("Please fill in all fields.");
     }
   };
 
   const nextQuestion = () => {
     if (question === 5) {
       finishGoal();
-    } else {
+      setQuestion(1);
+      setTitle('');
+      setProgress('');
+      setTotal('');
+      setTargetDate('');
+    } else if (question < 5) {
       setQuestion(question + 1);
     }
   };
