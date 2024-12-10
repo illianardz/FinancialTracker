@@ -69,6 +69,13 @@ export default function CustomPlan() {
         </View>
     );
 
+    const formatCurrency = (amount) => {
+        if (amount === '' || isNaN(Number(amount))) {
+            return '';
+        }
+        return `$${parseInt(amount).toLocaleString()}`;
+    };
+
     const formatPercentage = (value, total) => {
         const numValue = Number(value);
         if (total === 0) return "0%";  // Return 0% if total expenses are zero to avoid division by zero
@@ -83,10 +90,10 @@ export default function CustomPlan() {
         return (
             <View style={styles.centered}>
                 <Text style={styles.planTitle}>FINANCIAL HEALTH SUMMARY</Text>
-                <Text style={styles.planLabel}>Total Income (monthly): {Number(salary) + Number(additionalIncome)}</Text>
-                <Text style={styles.planLabel}>Expenses (monthly): {totalExpenses}</Text>
-                <Text style={styles.planLabel}>Net Savings (monthly): {(Number(salary) + Number(additionalIncome)) - totalExpenses}</Text>
-                <Text style={styles.planLabel}>Investment Balance: {Number(totalSavings) + Number(retirementAccounts) + Number(stocksAndBonds) + Number(mutualFunds)}</Text>
+                <Text style={styles.planLabel}>Total Income (monthly): {formatCurrency(Number(salary) + Number(additionalIncome))}</Text>
+                <Text style={styles.planLabel}>Expenses (monthly): {formatCurrency(totalExpenses)}</Text>
+                <Text style={styles.planLabel}>Net Savings (monthly): {formatCurrency((Number(salary) + Number(additionalIncome)) - totalExpenses)}</Text>
+                <Text style={styles.planLabel}>Investment Balance: {formatCurrency(Number(totalSavings) + Number(retirementAccounts) + Number(stocksAndBonds) + Number(mutualFunds))}</Text>
 
                 <Text style={styles.planTitle}>BUDGET BREAKDOWN</Text>
                 <Text style={styles.planLabel}>Housing: {formatPercentage(housing, totalExpenses)}</Text>
@@ -194,7 +201,7 @@ export default function CustomPlan() {
                         <TextInput
                             style={[styles.planInput, !isValidInput(value) && styles.errorInput]}
                             keyboardType="numeric"
-                            value={value}
+                            value={formatCurrency(value)}
                             onChangeText={text => setValue(text.replace(/[^0-9]/g, ''))}
                             onBlur={() => {
                                 if (!isValidInput(value)) {
@@ -221,7 +228,7 @@ export default function CustomPlan() {
                         <TextInput
                             style={[styles.planInput, !isValidInput(value) && styles.errorInput]}
                             keyboardType="numeric"
-                            value={value}
+                            value={formatCurrency(value)}
                             onChangeText={text => setValue(text.replace(/[^0-9]/g, ''))}
                             onBlur={() => {
                                 if (!isValidInput(value)) {
@@ -259,7 +266,7 @@ export default function CustomPlan() {
                         <TextInput
                             style={[styles.planInput, !isValidInput(value) && styles.errorInput]}
                             keyboardType="numeric"
-                            value={value}
+                            value={formatCurrency(value)}
                             onChangeText={text => setValue(text.replace(/[^0-9]/g, ''))}
                             onBlur={() => {
                                 if (!isValidInput(value)) {
@@ -289,25 +296,25 @@ export default function CustomPlan() {
             <>
                 <Text style={styles.planTitle}>Financial Plan Review</Text>
                 <Text style={styles.subtitle}>INCOME SUMMARY</Text>
-                <Text style={styles.planLabel}>Salary: {salary}</Text>
-                <Text style={styles.planLabel}>Additional Income: {additionalIncome}</Text>
+                <Text style={styles.planLabel}>Salary: {formatCurrency(salary)}</Text>
+                <Text style={styles.planLabel}>Additional Income: {formatCurrency(additionalIncome)}</Text>
     
                 <Text style={styles.subtitle}>EXPENSES SUMMARY</Text>
-                <Text style={styles.planLabel}>Housing: {housing}</Text>
-                <Text style={styles.planLabel}>Utilities: {utilities}</Text>
-                <Text style={styles.planLabel}>Food: {food}</Text>
-                <Text style={styles.planLabel}>Transportation: {transportation}</Text>
-                <Text style={styles.planLabel}>Insurance: {insurance}</Text>
-                <Text style={styles.planLabel}>Entertainment: {entertainment}</Text>
-                <Text style={styles.planLabel}>Debt Payments: {debtPayments}</Text>
-                <Text style={styles.planLabel}>Savings/Investments: {savingsInvestments}</Text>
-                <Text style={styles.planLabel}>Other Expenses: {otherExpenses}</Text>
+                <Text style={styles.planLabel}>Housing: {formatCurrency(housing)}</Text>
+                <Text style={styles.planLabel}>Utilities: {formatCurrency(utilities)}</Text>
+                <Text style={styles.planLabel}>Food: {formatCurrency(food)}</Text>
+                <Text style={styles.planLabel}>Transportation: {formatCurrency(transportation)}</Text>
+                <Text style={styles.planLabel}>Insurance: {formatCurrency(insurance)}</Text>
+                <Text style={styles.planLabel}>Entertainment: {formatCurrency(entertainment)}</Text>
+                <Text style={styles.planLabel}>Debt Payments: {formatCurrency(debtPayments)}</Text>
+                <Text style={styles.planLabel}>Savings/Investments: {formatCurrency(savingsInvestments)}</Text>
+                <Text style={styles.planLabel}>Other Expenses: {formatCurrency(otherExpenses)}</Text>
     
                 <Text style={styles.subtitle}>SAVINGS/INVESTMENT SUMMARY</Text>
-                <Text style={styles.planLabel}>Total Savings: {totalSavings}</Text>
-                <Text style={styles.planLabel}>Retirement Accounts: {retirementAccounts}</Text>
-                <Text style={styles.planLabel}>Stocks and Bonds: {stocksAndBonds}</Text>
-                <Text style={styles.planLabel}>Mutual Funds: {mutualFunds}</Text>
+                <Text style={styles.planLabel}>Total Savings: {formatCurrency(totalSavings)}</Text>
+                <Text style={styles.planLabel}>Retirement Accounts: {formatCurrency(retirementAccounts)}</Text>
+                <Text style={styles.planLabel}>Stocks and Bonds: {formatCurrency(stocksAndBonds)}</Text>
+                <Text style={styles.planLabel}>Mutual Funds: {formatCurrency(mutualFunds)}</Text>
     
                 <TouchableOpacity style={styles.planButton} onPress={handleGeneratePlan}>
                     <Text style={styles.planButtonText}>Generate Plan</Text>
