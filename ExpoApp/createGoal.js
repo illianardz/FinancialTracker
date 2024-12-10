@@ -18,13 +18,9 @@ export default function CreateGoal({ navigation }) {
         total: parseInt(total) || 0,
         targetDate,
       };
-         // Pass the new goal to TrackGoals and navigate back
-         navigation.navigate('TrackGoals', { newGoal });
-         setQuestion(1);
-         setTitle('');
-         setProgress('');
-         setTotal('');
-         setTargetDate('');
+      // Pass the new goal to TrackGoals and navigate back
+      navigation.navigate('TrackGoals', { newGoal });
+      resetForm();
     } else {
       console.log("Please fill in all fields.");
       alert("Please fill in all fields.");
@@ -85,18 +81,31 @@ export default function CreateGoal({ navigation }) {
     }
   };
 
-  //go to the previous question
   const prevQuestion = () => {
     if (question > 1) {
       setQuestion(question - 1);
     }
   };
 
+  const cancelGoalSetup = () => {
+    // Example of simply going back
+    navigation.goBack();
+    // Or reset form and navigate
+    resetForm();
+  };
+
+  const resetForm = () => {
+    setQuestion(1);
+    setTitle('');
+    setProgress('');
+    setTotal('');
+    setTargetDate('');
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.createContainer}>
       <Text style={styles.createHeader}>Goal Setup</Text>
 
-      {/* Goal enter */}
       {question === 1 && (
         <View style={styles.questionContainer}>
           <Text style={styles.label}>What is your goal?</Text>
@@ -166,6 +175,11 @@ export default function CreateGoal({ navigation }) {
         {question > 1 && (
           <TouchableOpacity onPress={prevQuestion} style={styles.createButton}>
             <Text style={styles.createButtonText}>Previous</Text>
+          </TouchableOpacity>
+        )}
+        {question === 1 && (
+          <TouchableOpacity onPress={cancelGoalSetup} style={styles.createButton}>
+            <Text style={styles.createButtonText}>Cancel</Text>
           </TouchableOpacity>
         )}
         <TouchableOpacity onPress={nextQuestion} style={[styles.createButton, styles.nextButton]}>
