@@ -257,7 +257,7 @@ export default function CustomPlan() {
                 <Text style={styles.planLabel}>Safety Net: {safetyNet}</Text>
     
                 <TouchableOpacity style={styles.planButton} onPress={handleGeneratePlan}>
-                    <Text style={styles.planButtonText}>GENERATE PLAN</Text>
+                    <Text style={styles.planButtonText}>Generate Plan</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.planButton} onPress={() => handleNextPage('savingsInvestments')}>
                     <Text style={styles.planButtonText}>Back</Text>
