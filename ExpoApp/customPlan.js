@@ -86,7 +86,7 @@ export default function CustomPlan() {
         const totalExpenses = Number(housing) + Number(utilities) + Number(food) + Number(transportation) +
                               Number(insurance) + Number(entertainment) + Number(debtPayments) +
                               Number(savingsInvestments) + Number(otherExpenses);
-
+                              
         return (
             <View style={styles.centered}>
                 <Text style={styles.planTitle}>FINANCIAL HEALTH SUMMARY</Text>
@@ -105,6 +105,12 @@ export default function CustomPlan() {
                 <Text style={styles.planLabel}>Debt Payments: {formatPercentage(debtPayments, totalExpenses)}</Text>
                 <Text style={styles.planLabel}>Savings/Investments: {formatPercentage(savingsInvestments, totalExpenses)}</Text>
                 <Text style={styles.planLabel}>Other Expenses: {formatPercentage(otherExpenses, totalExpenses)}</Text>
+
+                <TouchableOpacity
+                    style={styles.planButton}
+                    onPress={() => navigation.navigate('Home')}>
+                    <Text style={styles.planButtonText}>Save Plan</Text>
+                </TouchableOpacity>
             </View>
         );
     };
