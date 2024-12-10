@@ -118,6 +118,7 @@ export default function TrackGoals({ route, navigation }) {
       >
         <Text style={styles.backButtonText}>Back</Text>
       </TouchableOpacity>
+      
     </ScrollView>
   );
 }
