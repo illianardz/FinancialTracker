@@ -169,10 +169,18 @@ export default function CustomPlan() {
             <>
                 <InfoModal />
                 <Text style={styles.planTitle}>Enter Monthly Income:</Text>
-                {[['Salary', salary, setSalary], ['Additional Income', additionalIncome, setAdditionalIncome]].map(([planLabel, value, setValue], index) => (
+                {[
+                    ['Salary', salary, setSalary], 
+                    ['Additional Income', additionalIncome, setAdditionalIncome]
+                ].map(([planLabel, value, setValue], index) => (
                     <View style={styles.planInputContainer} key={index}>
                         <Text style={styles.planLabel}>{planLabel}:</Text>
-                        <TextInput style={styles.input} keyboardType="numeric" value={value} onChangeText={setValue} />
+                        <TextInput 
+                        style={styles.planInput} 
+                        keyboardType="numeric" 
+                        value={value} 
+                        onChangeText={setValue} 
+                        />
                     </View>
                 ))}
                 <Text style={styles.planTitle}>Enter Monthly Expenses:</Text>
@@ -189,7 +197,12 @@ export default function CustomPlan() {
                 ].map(([planLabel, value, setValue], index) => (
                     <View style={styles.planInputContainer} key={index}>
                         <Text style={styles.planLabel}>{planLabel}:</Text>
-                        <TextInput style={styles.planInput} keyboardType="numeric" value={value} onChangeText={setValue} />
+                        <TextInput 
+                        style={styles.planInput} 
+                        keyboardType="numeric" 
+                        value={value}
+                        onChangeText={setValue} 
+                        />
                     </View>
                 ))}
                 <TouchableOpacity style={styles.planButton} onPress={() => setModalVisible(true)}>
@@ -213,7 +226,12 @@ export default function CustomPlan() {
                 ].map(([planLabel, value, setValue], index) => (
                     <View style={styles.planInputContainer} key={index}>
                         <Text style={styles.planLabel}>{planLabel}:</Text>
-                        <TextInput style={styles.planInput} keyboardType="numeric" value={value} onChangeText={setValue} />
+                        <TextInput 
+                        style={styles.planInput} 
+                        keyboardType="numeric" 
+                        value={value} 
+                        onChangeText={setValue} 
+                        />
                     </View>
                 ))}
                 <TouchableOpacity style={styles.planButton} onPress={() => setSavingsModalVisible(true)}>

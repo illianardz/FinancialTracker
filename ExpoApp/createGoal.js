@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import { Modal, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import styles from './styles';
 
 export default function CreateGoal({ navigation }) {
@@ -31,17 +31,57 @@ export default function CreateGoal({ navigation }) {
     }
   };
 
+  const formReset = () => {
+    setQuestion(1);
+    setTitle('');
+    setProgress('');
+    setTotal('');
+    setTargetDate('');
+  };
+
+  const validateQuestion = () => {
+    if (question == 1){
+      if(title == ''){
+        alert("Please fill in a tile.");
+        return false;
+      } else {
+        return true;
+      }
+    } else if(question == 2){
+      if(total == '' || isNaN(total) || Number(total) <= 0 ){
+        alert("Please fill in a valid monetary amount.");
+        return false;
+      } else {
+        return true;
+      }
+    } else if(question == 3){
+      if(progress == '' || isNaN(progress) || Number(progress) < 0 || Number(progress) > Number(total)){
+        alert("Please fill in a valid monetary amount.");
+        return false;
+      } else {
+        return true;
+      }
+    } else if(question == 4){
+      if(targetDate == '' || isNaN(targetDate) || Number(targetDate) <= 0 ){
+        alert("Please fill in a valid Target Date.");
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return true;
+    }
+  };
+
   //move to the next question
   const nextQuestion = () => {
-    if (question === 5) {
-      finishGoal();
-      setQuestion(1);
-      setTitle('');
-      setProgress('');
-      setTotal('');
-      setTargetDate('');
-    } else if (question < 5) {
-      setQuestion(question + 1);
+    if(validateQuestion()){
+      if (question === 5) {
+        finishGoal();
+        formReset();
+      } else if (question < 5) {
+        setQuestion(question + 1);
+      }
     }
   };
 

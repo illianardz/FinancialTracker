@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
   },
   createContainer: {
     flex: 1,
-    padding: 10,
     backgroundColor: '#E5EBEA',
   },
   questionContainer: {
@@ -131,10 +130,10 @@ const styles = StyleSheet.create({
   },
   trackContainer: {
     flex: 1,
-    padding: 10,
     backgroundColor: '#E5EBEA',
   },
   trackHeader: {
+    flex: 1,
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
@@ -212,6 +211,7 @@ const styles = StyleSheet.create({
     transform: [{ translateX: -25 }, { translateY: -10 }],
   },
   trackInput: {
+    backgroundColor: '#FFF',
     height: 40,
     borderColor: '#ccc',
     borderWidth: 1,
@@ -296,8 +296,8 @@ const styles = StyleSheet.create({
     color: '#2C2C2C',
   },
   planContainer: {
-    flex: 1,
-    padding: 20,
+    padding: 2,
+    flex: 8,
     backgroundColor: '#E5EBEA',
   },
   centered: {
@@ -330,10 +330,11 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   planInput: {
+    backgroundColor: '#FFF',
     flex: 1,
-    height: 35,
+    height: 30,
     borderWidth: 1,
-    padding: 8,
+    padding: 6,
     fontSize: 16,
     borderColor: '#ccc',
     borderRadius: 5,
