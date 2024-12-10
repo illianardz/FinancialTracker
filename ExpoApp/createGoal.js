@@ -4,6 +4,9 @@ import styles from './styles';
 
 export default function CreateGoal({ navigation }) {
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
   const [title, setTitle] = useState('');
   const [progress, setProgress] = useState('');
   const [total, setTotal] = useState('');
@@ -16,6 +19,16 @@ export default function CreateGoal({ navigation }) {
     }
     return `$${parseInt(amount).toLocaleString()}`;
   };
+
+  const showError = (error) => {
+    setErrorMessage(error);
+    setModalVisible(true);
+  }
+
+  const hideError = () => {
+    setErrorMessage('');
+    setModalVisible(false);
+  }
   
   const finishGoal = () => {
     if (title && progress && total && targetDate) {
@@ -30,7 +43,7 @@ export default function CreateGoal({ navigation }) {
       resetForm();
     } else {
       console.log("Please fill in all fields.");
-      alert("Please fill in all fields.");
+      showError("Please fill in all fields.");
     }
   };
 
@@ -45,28 +58,28 @@ export default function CreateGoal({ navigation }) {
   const validateQuestion = () => {
     if (question == 1){
       if(title == ''){
-        alert("Please fill in a tile.");
+        showError("Please fill in a title.");
         return false;
       } else {
         return true;
       }
     } else if(question == 2){
       if(total == '' || isNaN(total) || Number(total) <= 0 ){
-        alert("Please fill in a valid monetary amount.");
+        showError("Please fill in a valid monetary amount.");
         return false;
       } else {
         return true;
       }
     } else if(question == 3){
       if(progress == '' || isNaN(progress) || Number(progress) < 0 || Number(progress) > Number(total)){
-        alert("Please fill in a valid monetary amount.");
+        showError("Please fill in a valid monetary amount.");
         return false;
       } else {
         return true;
       }
     } else if(question == 4){
       if(targetDate == '' || isNaN(targetDate) || Number(targetDate) <= 0 ){
-        alert("Please fill in a valid Target Date.");
+        showError("Please fill in a valid Target Date.");
         return false;
       } else {
         return true;
@@ -112,11 +125,9 @@ export default function CreateGoal({ navigation }) {
   return (
     <ScrollView contentContainerStyle={styles.createContainer}>
       <Text style={styles.createHeader}>Goal Setup</Text>
-
       {question === 1 && (
         <View style={styles.questionContainer}>
           <Text style={styles.description}>
-            
 Set your financial goals by choosing what you're saving for
 and specify your target amount and the timeframe you aim to achieve it by. 
           </Text>
@@ -189,21 +200,51 @@ and specify your target amount and the timeframe you aim to achieve it by.
       {/* Navigation buttons */}
       <View style={styles.navButtons}>
         {question > 1 && (
-          <TouchableOpacity onPress={prevQuestion} style={styles.createButton}>
+          <TouchableOpacity 
+            onPress={prevQuestion} 
+            style={styles.createButton}
+            >
             <Text style={styles.createButtonText}>Previous</Text>
           </TouchableOpacity>
         )}
         {question === 1 && (
-          <TouchableOpacity onPress={cancelGoalSetup} style={styles.createButton}>
+          <TouchableOpacity 
+            onPress={cancelGoalSetup} 
+            style={styles.createButton}
+            >
             <Text style={styles.createButtonText}>Cancel</Text>
           </TouchableOpacity>
         )}
-        <TouchableOpacity onPress={nextQuestion} style={[styles.createButton, styles.nextButton]}>
+        <TouchableOpacity 
+          onPress={nextQuestion} 
+          style={[styles.createButton, styles.nextButton]}
+          >
           <Text style={styles.createButtonText}>
             {question === 5 ? 'Finish' : 'Next'}
           </Text>
         </TouchableOpacity>
       </View>
+      {/*Popups for error handling*/}
+
+      <Modal 
+        visible ={modalVisible}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={hideError}
+      >
+        <View style= {styles.errorOverlay}>
+          <View style={styles.errorContainer}>
+            <Text style={styles.errorText}>{errorMessage}
+              <TouchableOpacity 
+                onPress={hideError} 
+                style = {styles.errorButton}
+                >
+                <Text style={styles.errorButtonText}> OK </Text>
+              </TouchableOpacity>
+            </Text>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 }

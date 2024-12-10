@@ -117,7 +117,7 @@ export default function CustomPlan() {
 
     const InfoModal = () => (
         <Modal
-            animationType="slide"
+            animationType="fade"
             transparent={true}
             visible={modalVisible}
             onRequestClose={() => {
