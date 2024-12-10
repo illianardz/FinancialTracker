@@ -58,21 +58,21 @@ export default function CreateGoal({ navigation }) {
   const validateQuestion = () => {
     if (question == 1){
       if(title == ''){
-        showError("Please fill in a title.");
+        showError("Please fill in a title.\n");
         return false;
       } else {
         return true;
       }
     } else if(question == 2){
       if(total == '' || isNaN(total) || Number(total) <= 0 ){
-        showError("Please fill in a valid monetary amount.");
+        showError("Please fill in a valid monetary amount.\n");
         return false;
       } else {
         return true;
       }
     } else if(question == 3){
       if(progress == '' || isNaN(progress) || Number(progress) < 0 || Number(progress) > Number(total)){
-        showError("Please fill in a valid monetary amount.");
+        showError("Please fill in a valid monetary amount.\n");
         return false;
       } else {
         return true;
