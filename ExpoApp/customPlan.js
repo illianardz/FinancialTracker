@@ -46,25 +46,12 @@ export default function CustomPlan() {
         }
     };
 
-    const nextPage = (page) => {
-        setCurrentPage(page);
-    };
-
-    const handleGeneratePlan = () => {
-        setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-            setCurrentPage('financialHealthSummary');
-        }, 2000);
-    };
-
     const LoadingView = () => (
         <View style={styles.centered}>
             <ActivityIndicator size="large" color="#B098A4" />
             <Text style={styles.planTitle}>Generating Plan...</Text>
             <Text style={styles.subtitle}>
-                Did you know?
-                Financial experts recommend having an emergency fund that covers at least three to six months of living expenses to protect against unforeseen financial hardships.
+                Did you know? Financial experts recommend having an emergency fund that covers at least three to six months of living expenses to protect against unforeseen financial hardships.
             </Text>
         </View>
     );
@@ -120,28 +107,21 @@ export default function CustomPlan() {
             animationType="slide"
             transparent={true}
             visible={modalVisible}
-            onRequestClose={() => {
-                Alert.alert("Modal has been closed.");
-                setModalVisible(!modalVisible);
-            }}
-        >
+            onRequestClose={() => setModalVisible(!modalVisible)}>
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                     <Text style={styles.modalTitle}>Income and Expenses</Text>
                     <Text style={styles.modalSubtitle}>Income:</Text>
                     <Text style={styles.modalText}>
-                        The total money you receive from various sources such as wages, business profits, investment returns, and other earnings.
-                        It represents your financial inflow.
+                        The total money you receive from various sources such as wages, business profits, investment returns, and other earnings. It represents your  financial inflow.
                     </Text>
                     <Text style={styles.modalSubtitle}>Expenses:</Text>
                     <Text style={styles.modalText}>
-                        All the costs incurred in earning income and maintaining a standard of living or business operations.
-                        This includes rent, utilities, supplies, and other necessary payments. Expenses represent your financial outflow.
+                        All the costs incurred in earning income and maintaining a standard of living or business operations. This includes rent, utilities, supplies, and other necessary payments. Expenses represent your financial outflow.
                     </Text>
                     <TouchableOpacity
                         style={[styles.planButton, styles.planButtonClose]}
-                        onPress={() => setModalVisible(false)}
-                    >
+                        onPress={() => setModalVisible(false)}>
                         <Text style={styles.planButtonClose}>Close</Text>
                     </TouchableOpacity>
                 </View>
@@ -154,14 +134,10 @@ export default function CustomPlan() {
             animationType="slide"
             transparent={true}
             visible={savingsModalVisible}
-            onRequestClose={() => {
-                Alert.alert("Modal has been closed.");
-                setSavingsModalVisible(!savingsModalVisible);
-            }}
-        >
+            onRequestClose={() => setSavingsModalVisible(!savingsModalVisible)}>
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                    <Text style={styles.modalTitle}>About Savings and Investments</Text>
+                <Text style={styles.modalTitle}>About Savings and Investments</Text>
                     <Text style={styles.modalSubtitle}>Total Savings:</Text>
                     <Text style={styles.modalText}>
                         The sum of all money saved across different accounts and liquid assets that can be accessed easily.
@@ -185,166 +161,129 @@ export default function CustomPlan() {
                     </Text>
                     <TouchableOpacity
                         style={[styles.planButton, styles.planButtonClose]}
-                        onPress={() => setSavingsModalVisible(false)}
-                    >
+                        onPress={() => setSavingsModalVisible(false)}>
                         <Text style={styles.planButtonClose}>Close</Text>
                     </TouchableOpacity>
                 </View>
             </View>
         </Modal>
-        );
+    );
 
-        const IncomeExpensesView = () => (
-            <>
-                <InfoModal />
-                <Text style={styles.descriptionIncome}>
-                    Create a tailored financial plan that perfectly fits your unique financial situation!
-                </Text>
-                <Text style={styles.descriptionIncome}>
-                    For more empowerment in your decision-making, press "Learn More" to 
-                    access information on the financial topics relevant to your inputs.
-                </Text>
-                <Text style={styles.planTitle}>Enter Monthly Income:</Text>
-                {[
-                    ['Salary', salary, setSalary], 
-                    ['Additional Income', additionalIncome, setAdditionalIncome]
-                ].map(([planLabel, value, setValue], index) => (
-                    <View style={styles.planInputContainer} key={index}>
-                        <Text style={styles.planLabel}>{planLabel}:</Text>
-                        <TextInput
-                            style={[styles.planInput, !isValidInput(value) && styles.errorInput]}
-                            keyboardType="numeric"
-                            value={formatCurrency(value)}
-                            onChangeText={text => setValue(text.replace(/[^0-9]/g, ''))}
-                            onBlur={() => {
-                                if (!isValidInput(value)) {
-                                    Alert.alert("Invalid Input", "Please enter a valid numeric value.");
-                                }
-                            }}
-                        />
-                    </View>
-                ))}
-                <Text style={styles.planTitle}>Enter Monthly Expenses:</Text>
-                {[
-                    ['Housing', housing, setHousing],
-                    ['Utilities', utilities, setUtilities],
-                    ['Food', food, setFood],
-                    ['Transportation', transportation, setTransportation],
-                    ['Insurance', insurance, setInsurance],
-                    ['Entertainment', entertainment, setEntertainment],
-                    ['Debt Payments', debtPayments, setDebtPayments],
-                    ['Savings/Investments', savingsInvestments, setSavingsInvestments],
-                    ['Other Expenses', otherExpenses, setOtherExpenses]
-                ].map(([planLabel, value, setValue], index) => (
-                    <View style={styles.planInputContainer} key={index}>
-                        <Text style={styles.planLabel}>{planLabel}:</Text>
-                        <TextInput
-                            style={[styles.planInput, !isValidInput(value) && styles.errorInput]}
-                            keyboardType="numeric"
-                            value={formatCurrency(value)}
-                            onChangeText={text => setValue(text.replace(/[^0-9]/g, ''))}
-                            onBlur={() => {
-                                if (!isValidInput(value)) {
-                                    Alert.alert("Invalid Input", "Please enter a valid numeric value.");
-                                }
-                            }}
-                        />
-                    </View>
-                ))}
-                <TouchableOpacity style={styles.planButton} onPress={() => setModalVisible(true)}>
-                    <Text style={styles.planButtonText}>Learn More</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={[styles.planButton, { opacity: allFields.every(isValidInput) ? 1 : 0.5 }]}
-                    onPress={() => handleNextPage('savingsInvestments', allFields)}
-                    disabled={!allFields.every(isValidInput)}
-                >
-                    <Text style={styles.planButtonText}>Next</Text>
-                </TouchableOpacity>
-            </>
-        );
-    
-        const SavingsInvestmentsView = () => (
-            <>
-                <SavingsInfoModal />
-                <Text style={styles.planTitle}>Savings and Investments:</Text>
-                {[
-                    ['Total Savings', totalSavings, setTotalSavings],
-                    ['Retirement Accounts', retirementAccounts, setRetirementAccounts],
-                    ['Stocks and Bonds', stocksAndBonds, setStocksAndBonds],
-                    ['Mutual Funds', mutualFunds, setMutualFunds]
-                ].map(([planLabel, value, setValue], index) => (
-                    <View style={styles.planInputContainer} key={index}>
-                        <Text style={styles.planLabel}>{planLabel}:</Text>
-                        <TextInput
-                            style={[styles.planInput, !isValidInput(value) && styles.errorInput]}
-                            keyboardType="numeric"
-                            value={formatCurrency(value)}
-                            onChangeText={text => setValue(text.replace(/[^0-9]/g, ''))}
-                            onBlur={() => {
-                                if (!isValidInput(value)) {
-                                    Alert.alert("Invalid Input", "Please enter a valid numeric value.");
-                                }
-                            }}
-                        />
-                    </View>
-                ))}
-                <TouchableOpacity style={styles.planButton} onPress={() => setSavingsModalVisible(true)}>
-                    <Text style={styles.planButtonText}>Learn More</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={[styles.planButton, { opacity: investmentFields.every(isValidInput) ? 1 : 0.5 }]}
-                    onPress={() => handleNextPage('financialPlanReview', investmentFields)}
-                    disabled={!investmentFields.every(isValidInput)}
-                >
-                    <Text style={styles.planButtonText}>Next</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.planButton} onPress={() => nextPage('incomeExpenses')}>
-                    <Text style={styles.planButtonText}>Back</Text>
-                </TouchableOpacity>
-            </>
-        );
-    
-        const FinancialPlanReviewView = () => (
-            <>
-                <Text style={styles.planTitle}>Financial Plan Review</Text>
-                <Text style={styles.subtitle}>INCOME SUMMARY</Text>
-                <Text style={styles.planLabel}>Salary: {formatCurrency(salary)}</Text>
-                <Text style={styles.planLabel}>Additional Income: {formatCurrency(additionalIncome)}</Text>
-    
-                <Text style={styles.subtitle}>EXPENSES SUMMARY</Text>
-                <Text style={styles.planLabel}>Housing: {formatCurrency(housing)}</Text>
-                <Text style={styles.planLabel}>Utilities: {formatCurrency(utilities)}</Text>
-                <Text style={styles.planLabel}>Food: {formatCurrency(food)}</Text>
-                <Text style={styles.planLabel}>Transportation: {formatCurrency(transportation)}</Text>
-                <Text style={styles.planLabel}>Insurance: {formatCurrency(insurance)}</Text>
-                <Text style={styles.planLabel}>Entertainment: {formatCurrency(entertainment)}</Text>
-                <Text style={styles.planLabel}>Debt Payments: {formatCurrency(debtPayments)}</Text>
-                <Text style={styles.planLabel}>Savings/Investments: {formatCurrency(savingsInvestments)}</Text>
-                <Text style={styles.planLabel}>Other Expenses: {formatCurrency(otherExpenses)}</Text>
-    
-                <Text style={styles.subtitle}>SAVINGS/INVESTMENT SUMMARY</Text>
-                <Text style={styles.planLabel}>Total Savings: {formatCurrency(totalSavings)}</Text>
-                <Text style={styles.planLabel}>Retirement Accounts: {formatCurrency(retirementAccounts)}</Text>
-                <Text style={styles.planLabel}>Stocks and Bonds: {formatCurrency(stocksAndBonds)}</Text>
-                <Text style={styles.planLabel}>Mutual Funds: {formatCurrency(mutualFunds)}</Text>
-    
-                <TouchableOpacity style={styles.planButton} onPress={handleGeneratePlan}>
-                    <Text style={styles.planButtonText}>Generate Plan</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.planButton} onPress={() => nextPage('savingsInvestments')}>
-                    <Text style={styles.planButtonText}>Back</Text>
-                </TouchableOpacity>
-            </>
-        );
-    
+    const IncomeExpensesView = () => (
+        <>
+            <InfoModal />
+            <Text style={styles.descriptionIncome}>Create a tailored financial plan that perfectly fits your unique financial situation!</Text>
+            <Text style={styles.descriptionIncome}>For more empowerment in your decision-making, press "Learn More" to access information on the financial topics relevant to your inputs.</Text>
+            <Text style={styles.planTitle}>Enter Monthly Income:</Text>
+            {[
+                ['Salary', salary, setSalary], 
+                ['Additional Income', additionalIncome, setAdditionalIncome]
+            ].map(([planLabel, value, setValue], index) => (
+                <View style={styles.planInputContainer} key={index}>
+                    <Text style={styles.planLabel}>{planLabel}:</Text>
+                    <TextInput
+                        style={[styles.planInput, !isValidInput(value) && styles.errorInput]}
+                        keyboardType="numeric"
+                        value={formatCurrency(value)}
+                        onChangeText={text => setValue(text.replace(/[^0-9]/g, ''))}
+                        onBlur={() => {
+                            if (!isValidInput(value)) {
+                                Alert.alert("Invalid Input", "Please enter a valid numeric value.");
+                            }
+                        }}
+                    />
+                </View>
+            ))}
+            <Text style={styles.planTitle}>Enter Monthly Expenses:</Text>
+            {[
+                ['Housing', housing, setHousing],
+                ['Utilities', utilities, setUtilities],
+                ['Food', food, setFood],
+                ['Transportation', transportation, setTransportation],
+                ['Insurance', insurance, setInsurance],
+                ['Entertainment', entertainment, setEntertainment],
+                ['Debt Payments', debtPayments, setDebtPayments],
+                ['Savings/Investments', savingsInvestments, setSavingsInvestments],
+                ['Other Expenses', otherExpenses, setOtherExpenses]
+            ].map(([planLabel, value, setValue], index) => (
+                <View style={styles.planInputContainer} key={index}>
+                    <Text style={styles.planLabel}>{planLabel}:</Text>
+                    <TextInput
+                        style={[styles.planInput, !isValidInput(value) && styles.errorInput]}
+                        keyboardType="numeric"
+                        value={formatCurrency(value)}
+                        onChangeText={text => setValue(text.replace(/[^0-9]/g, ''))}
+                        onBlur={() => {
+                            if (!isValidInput(value)) {
+                                Alert.alert("Invalid Input", "Please enter a valid numeric value.");
+                            }
+                        }}
+                    />
+                </View>
+            ))}
+            <TouchableOpacity style={styles.planButton} onPress={() => setModalVisible(true)}>
+                <Text style={styles.planButtonText}>Learn More</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={[styles.planButton, { opacity: allFields.every(isValidInput) ? 1 : 0.5 }]}
+                onPress={() => handleNextPage('savingsInvestments', allFields)}
+                disabled={!allFields.every(isValidInput)}>
+                <Text style={styles.planButtonText}>Next</Text>
+            </TouchableOpacity>
+        </>
+    );
+
+    const SavingsInvestmentsView = () => (
+        <>
+            <SavingsInfoModal />
+            <Text style={styles.planTitle}>Savings and Investments:</Text>
+            {[
+                ['Total Savings', totalSavings, setTotalSavings],
+                ['Retirement Accounts', retirementAccounts, setRetirementAccounts],
+                ['Stocks and Bonds', stocksAndBonds, setStocksAndBonds],
+                ['Mutual Funds', mutualFunds, setMutualFunds]
+            ].map(([planLabel, value, setValue], index) => (
+                <View style={styles.planInputContainer} key={index}>
+                    <Text style={styles.planLabel}>{planLabel}:</Text>
+                    <TextInput
+                        style={[styles.planInput, !isValidInput(value) && styles.errorInput]}
+                        keyboardType="numeric"
+                        value={formatCurrency(value)}
+                        onChangeText={text => setValue(text.replace(/[^0-9]/g, ''))}
+                        onBlur={() => {
+                            if (!isValidInput(value)) {
+                                Alert.alert("Invalid Input", "Please enter a valid numeric value.");
+                            }
+                        }}
+                    />
+                </View>
+            ))}
+            <TouchableOpacity style={styles.planButton} onPress={() => setSavingsModalVisible(true)}>
+                <Text style={styles.planButtonText}>Learn More</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={[styles.planButton, { opacity: investmentFields.every(isValidInput) ? 1 : 0.5 }]}
+                onPress={() => handleNextPage('financialPlanReview', investmentFields)}
+                disabled={!investmentFields.every(isValidInput)}>
+                <Text style={styles.planButtonText}>Next</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.planButton} onPress={() => setCurrentPage('incomeExpenses')}>
+                <Text style={styles.planButtonText}>Back</Text>
+            </TouchableOpacity>
+        </>
+    );
+
+    const FinancialPlanReviewView = () => (
+        <>
+            <FinancialHealthSummaryView />
+        </>
+    );
+
     return (
-        <ScrollView style={styles.planContainer} keyboardShouldPersistTaps='handled'>
-            {loading ? <LoadingView /> :
-             currentPage === 'incomeExpenses' ? <IncomeExpensesView /> :
-             currentPage === 'savingsInvestments' ? <SavingsInvestmentsView /> :
-             currentPage === 'financialPlanReview' ? <FinancialPlanReviewView /> :
-             <FinancialHealthSummaryView />}
+        <ScrollView style={styles.container}>
+            {currentPage === 'incomeExpenses' && IncomeExpensesView()}
+            {currentPage === 'savingsInvestments' && SavingsInvestmentsView()}
+            {currentPage === 'financialPlanReview' && FinancialPlanReviewView()}
         </ScrollView>
-    );        
+    );
 }
