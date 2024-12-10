@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CreateGoal from './createGoal'; 
 import TrackGoals from './trackGoals';
 import CustomPlan from './customPlan';
+import styles from './styles';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,41 +16,41 @@ function HomeScreen({ navigation }) {
   const [planButtonPressed, setPlanButtonPressed] = useState(false);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Financial Tracker</Text>
+    <SafeAreaView style={styles.appContainer}>
+      <View style={styles.appHeader}>
+        <Text style={styles.appTitle}>Financial Tracker</Text>
       </View>
-      <View style={styles.buttonContainer}>
+      <View style={styles.appButtonContainer}>
         <TouchableOpacity
-          style={[styles.button, goalButtonPressed ? styles.buttonPressed : null]}
+          style={[styles.appButton, goalButtonPressed ? styles.appButtonPressed : null]}
           onPressIn={() => setGoalButtonPressed(true)}
           onPressOut={() => setGoalButtonPressed(false)}
           onPress={() => navigation.navigate('CreateGoal')}
         >
-          <Text style={styles.buttonText}>CREATE GOAL</Text>
+          <Text style={styles.appButtonText}>CREATE GOAL</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.button, trackButtonPressed ? styles.buttonPressed : null]}
+          style={[styles.appButton, trackButtonPressed ? styles.appButtonPressed : null]}
           onPressIn={() => setTrackButtonPressed(true)}
           onPressOut={() => setTrackButtonPressed(false)}
           onPress={() => navigation.navigate('TrackGoals')}
         >
-          <Text style={styles.buttonText}>TRACK GOALS</Text>
+          <Text style={styles.appButtonText}>TRACK GOALS</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.button, planButtonPressed ? styles.buttonPressed : null]}
+          style={[styles.appButton, planButtonPressed ? styles.appButtonPressed : null]}
           onPressIn={() => setPlanButtonPressed(true)}
           onPressOut={() => setPlanButtonPressed(false)}
           onPress={() => navigation.navigate('CustomPlan')}
         >
-          <Text style={styles.buttonText}>CUSTOM PLAN</Text>
+          <Text style={styles.appButtonText}>CUSTOM PLAN</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.navBar}>
-        <Text style={styles.navText}>Home</Text>
-        <Text style={styles.navText}>Diary</Text>
-        <Text style={styles.navText}>Learn</Text>
-        <Text style={styles.navText}>Plans</Text>
+      <View style={styles.appNavBar}>
+        <Text style={styles.appNavText}>Home</Text>
+        <Text style={styles.appNavText}>Diary</Text>
+        <Text style={styles.appNavText}>Learn</Text>
+        <Text style={styles.appNavText}>Plans</Text>
       </View>
     </SafeAreaView>
   );

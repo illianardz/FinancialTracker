@@ -1,41 +1,41 @@
 import { StyleSheet } from "react-native-web";
 
 const styles = StyleSheet.create({
-  container: {
+  appContainer: {
     flex: 1,
     backgroundColor: '#E5EBEA',
   },
-  header: {
+  appHeader: {
     backgroundColor: '#B098A4',
     padding: 45,
   },
-  title: {
+  appTitle: {
     fontSize: 50,
     color: '#2C2C2C',
     textAlign: 'center',
     fontWeight: 'bold',
   },
-  buttonContainer: {
+  appButtonContainer: {
     margin: 50,
     marginTop: 60,
     justifyContent: 'center',
   },
-  button: {
+  appButton: {
     backgroundColor: '#2C2C2C',
     padding: 35,
     alignItems: 'center',
     marginBottom: 20,
     borderRadius: 10,
   },
-  buttonText: {
+  appButtonText: {
     color: '#E5EBEA',
     fontSize: 25,
     fontWeight: 'bold',
   },
-  buttonPressed: {
+  appButtonPressed: {
     backgroundColor: '#7B8C7C', // New color when pressed
   },
-  navBar: {
+  appNavBar: {
     position: 'absolute',
     bottom: 0,
     width: '100%',
@@ -44,12 +44,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     padding: 40,
   },
-  navText: {
+  appNavText: {
     fontSize: 16,
     color: '#e3dbdf',
     fontWeight: 'bold',
   },
-  header: {
+  createHeader: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     padding: 45,
     color: '#2C2C2C',
   },
-  container: {
+  createContainer: {
     flex: 1,
     padding: 10,
     backgroundColor: '#E5EBEA',
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     color: '#333',
     textAlign: 'center',
   },
-  input: {
+  goalInput: {
     height: 60,
     borderColor: '#B098A4',
     borderWidth: 1,
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#555',
   },
-  button: {
+  createButton: {
     backgroundColor: '#2C2C2C',
     paddingVertical: 12,
     paddingHorizontal: 25,
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     width: '40%',
     alignItems: 'center',
   },
-  buttonText: {
+  createButtonText: {
     fontSize: 18,
     color: 'white',
     textAlign: 'center',
@@ -129,12 +129,12 @@ const styles = StyleSheet.create({
   nextButton: {
     marginLeft: 'auto', 
   },
-  container: {
+  trackContainer: {
     flex: 1,
     padding: 10,
     backgroundColor: '#E5EBEA',
   },
-  header: {
+  trackHeader: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     left: '50%',
     transform: [{ translateX: -25 }, { translateY: -10 }],
   },
-  input: {
+  trackInput: {
     height: 40,
     borderColor: '#ccc',
     borderWidth: 1,
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  header: {
+  planHeader: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
@@ -295,41 +295,41 @@ const styles = StyleSheet.create({
     padding: 45,
     color: '#2C2C2C',
   },
-container: {
+  planContainer: {
     flex: 1,
     padding: 20,
     backgroundColor: '#E5EBEA',
-},
-centered: {
+  },
+  centered: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-},
-title: {
+  },
+  planTitle: {
     fontSize: 22,
     fontWeight: 'bold',
     marginTop: 20,
     marginBottom: 10,
     textAlign: 'center',
-},
-subtitle: {
+  },
+  subtitle: {
     fontSize: 16,
     marginTop: 10,
     textAlign: 'center',
     fontWeight: 'bold',
-},
-inputContainer: {
+  },
+  planInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 12,
-},
-label: {
+  },
+  planLabel: {
     fontSize: 16,
     width: 150,
     marginRight: 10,
-},
-input: {
+  },
+  planInput: {
     flex: 1,
     height: 35,
     borderWidth: 1,
@@ -338,8 +338,8 @@ input: {
     borderColor: '#ccc',
     borderRadius: 5,
     width: '50%',
-},
-button: {
+  },
+  planButton: {
     backgroundColor: '#2C2C2C',
     padding: 10,
     alignItems: 'center',
@@ -347,19 +347,19 @@ button: {
     marginTop: 10,
     marginBottom: 10,
     borderRadius: 10,
-},
-buttonText: {
+  },
+  planButtonText: {
     color: '#E5EBEA',
     fontSize: 16,
     fontWeight: 'bold',
-},
-centeredView: {
+  },
+  centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 22
-},
-modalView: {
+  },
+  modalView: {
     width: 300,
     minHeight: 500,
     backgroundColor: "#45503B",
@@ -375,33 +375,33 @@ modalView: {
     shadowRadius: 4,
     elevation: 5,
     justifyContent: 'center',
-},
-modalTitle: {
+  },
+  modalTitle: {
     marginBottom: 15,
     textAlign: "center",
     fontSize: 19,
     fontWeight: 'bold',
     color: '#e3dbdf',
-},
-modalSubtitle: {
+  },
+  modalSubtitle: {
     marginBottom: 15,
     textAlign: "center",
     fontSize: 17,
     fontWeight: 'bold',
     color: '#e3dbdf',
-},
-modalText: {
+  },
+  modalText: {
     marginBottom: 15,
     textAlign: 'center',
     color: '#E5EBEA',
-},
-buttonClose: {
+  },
+  buttonClose: {
     backgroundColor: "#e3dbdf",
     color: '#2C2C2C',
     fontWeight: 'bold',
-},
-label: {
+  },
+  planLabel: {
     fontWeight: 'bold',
-}
+  }
 });
 export default styles;

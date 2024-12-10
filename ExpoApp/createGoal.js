@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import styles from './styles';
 
 export default function CreateGoal({ navigation }) {
 
@@ -47,15 +48,15 @@ export default function CreateGoal({ navigation }) {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.header}>Goal Setup</Text>
+    <ScrollView contentContainerStyle={styles.createContainer}>
+      <Text style={styles.createHeader}>Goal Setup</Text>
 
       {/* Goal enter */}
       {question === 1 && (
         <View style={styles.questionContainer}>
           <Text style={styles.label}>What is your goal?</Text>
           <TextInput
-            style={styles.input}
+            style={styles.goalInput}
             placeholder="Enter goal title"
             value={title}
             onChangeText={setTitle}
@@ -68,7 +69,7 @@ export default function CreateGoal({ navigation }) {
         <View style={styles.questionContainer}>
           <Text style={styles.label}>What is your goal amount (in Dollars)?</Text>
           <TextInput
-            style={styles.input}
+            style={styles.goalInput}
             placeholder="Enter goal amount"
             keyboardType="numeric"
             value={total}
@@ -82,7 +83,7 @@ export default function CreateGoal({ navigation }) {
         <View style={styles.questionContainer}>
           <Text style={styles.label}>Total currently saved (in Dollars): </Text>
           <TextInput
-            style={styles.input}
+            style={styles.goalInput}
             placeholder="Enter current savings"
             keyboardType="numeric"
             value={progress}
@@ -96,7 +97,7 @@ export default function CreateGoal({ navigation }) {
         <View style={styles.questionContainer}>
           <Text style={styles.label}>Target time frame (in months):</Text>
           <TextInput
-            style={styles.input}
+            style={styles.goalInput}
             placeholder="Enter target time frame in months"
             value={targetDate}
             onChangeText={setTargetDate}
@@ -118,12 +119,12 @@ export default function CreateGoal({ navigation }) {
       {/* Navigation buttons */}
       <View style={styles.navButtons}>
         {question > 1 && (
-          <TouchableOpacity onPress={prevQuestion} style={styles.button}>
-            <Text style={styles.buttonText}>Previous</Text>
+          <TouchableOpacity onPress={prevQuestion} style={styles.createButton}>
+            <Text style={styles.createButtonText}>Previous</Text>
           </TouchableOpacity>
         )}
-        <TouchableOpacity onPress={nextQuestion} style={[styles.button, styles.nextButton]}>
-          <Text style={styles.buttonText}>
+        <TouchableOpacity onPress={nextQuestion} style={[styles.createButton, styles.nextButton]}>
+          <Text style={styles.createButtonText}>
             {question === 5 ? 'Finish' : 'Next'}
           </Text>
         </TouchableOpacity>

@@ -3,6 +3,7 @@ import {
   StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView,
   ActivityIndicator, Modal, Alert
 } from 'react-native';
+import styles from './styles';
 
 export default function CustomPlan() {
     const [currentPage, setCurrentPage] = useState('incomeExpenses');
@@ -44,7 +45,7 @@ export default function CustomPlan() {
     const LoadingView = () => (
         <View style={styles.centered}>
             <ActivityIndicator size="large" color="#B098A4" />
-            <Text style={styles.title}>Generating Plan...</Text>
+            <Text style={styles.planTitle}>Generating Plan...</Text>
             <Text style={styles.subtitle}>
                 Did you know?
                 Financial experts recommend having an emergency fund that covers at least three to six months of living expenses to protect against unforeseen financial hardships.
@@ -65,22 +66,22 @@ export default function CustomPlan() {
 
         return (
             <View style={styles.centered}>
-                <Text style={styles.title}>FINANCIAL HEALTH SUMMARY</Text>
-                <Text style={styles.label}>Total Income (monthly): {Number(salary) + Number(additionalIncome)}</Text>
-                <Text style={styles.label}>Expenses (monthly): {totalExpenses}</Text>
-                <Text style={styles.label}>Net Savings (monthly): {(Number(salary) + Number(additionalIncome)) - totalExpenses}</Text>
-                <Text style={styles.label}>Investment Balance: {Number(totalSavings) + Number(retirementAccounts) + Number(stocksAndBonds) + Number(mutualFunds)}</Text>
+                <Text style={styles.planTitle}>FINANCIAL HEALTH SUMMARY</Text>
+                <Text style={styles.planLabel}>Total Income (monthly): {Number(salary) + Number(additionalIncome)}</Text>
+                <Text style={styles.planLabel}>Expenses (monthly): {totalExpenses}</Text>
+                <Text style={styles.planLabel}>Net Savings (monthly): {(Number(salary) + Number(additionalIncome)) - totalExpenses}</Text>
+                <Text style={styles.planLabel}>Investment Balance: {Number(totalSavings) + Number(retirementAccounts) + Number(stocksAndBonds) + Number(mutualFunds)}</Text>
 
-                <Text style={styles.title}>BUDGET BREAKDOWN</Text>
-                <Text style={styles.label}>Housing: {formatPercentage(housing, totalExpenses)}</Text>
-                <Text style={styles.label}>Utilities: {formatPercentage(utilities, totalExpenses)}</Text>
-                <Text style={styles.label}>Food: {formatPercentage(food, totalExpenses)}</Text>
-                <Text style={styles.label}>Transportation: {formatPercentage(transportation, totalExpenses)}</Text>
-                <Text style={styles.label}>Insurance: {formatPercentage(insurance, totalExpenses)}</Text>
-                <Text style={styles.label}>Entertainment: {formatPercentage(entertainment, totalExpenses)}</Text>
-                <Text style={styles.label}>Debt Payments: {formatPercentage(debtPayments, totalExpenses)}</Text>
-                <Text style={styles.label}>Savings/Investments: {formatPercentage(savingsInvestments, totalExpenses)}</Text>
-                <Text style={styles.label}>Other Expenses: {formatPercentage(otherExpenses, totalExpenses)}</Text>
+                <Text style={styles.planTitle}>BUDGET BREAKDOWN</Text>
+                <Text style={styles.planLabel}>Housing: {formatPercentage(housing, totalExpenses)}</Text>
+                <Text style={styles.planLabel}>Utilities: {formatPercentage(utilities, totalExpenses)}</Text>
+                <Text style={styles.planLabel}>Food: {formatPercentage(food, totalExpenses)}</Text>
+                <Text style={styles.planLabel}>Transportation: {formatPercentage(transportation, totalExpenses)}</Text>
+                <Text style={styles.planLabel}>Insurance: {formatPercentage(insurance, totalExpenses)}</Text>
+                <Text style={styles.planLabel}>Entertainment: {formatPercentage(entertainment, totalExpenses)}</Text>
+                <Text style={styles.planLabel}>Debt Payments: {formatPercentage(debtPayments, totalExpenses)}</Text>
+                <Text style={styles.planLabel}>Savings/Investments: {formatPercentage(savingsInvestments, totalExpenses)}</Text>
+                <Text style={styles.planLabel}>Other Expenses: {formatPercentage(otherExpenses, totalExpenses)}</Text>
             </View>
         );
     };
@@ -109,10 +110,10 @@ export default function CustomPlan() {
                         This includes rent, utilities, supplies, and other necessary payments. Expenses represent your financial outflow.
                     </Text>
                     <TouchableOpacity
-                        style={[styles.button, styles.buttonClose]}
+                        style={[styles.planButton, styles.planButtonClose]}
                         onPress={() => setModalVisible(false)}
                     >
-                        <Text style={styles.buttonClose}>Close</Text>
+                        <Text style={styles.planButtonClose}>Close</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -154,10 +155,10 @@ export default function CustomPlan() {
                         They offer diversification with less risk than individual stocks or bonds.
                     </Text>
                     <TouchableOpacity
-                        style={[styles.button, styles.buttonClose]}
+                        style={[styles.planButton, styles.planButtonClose]}
                         onPress={() => setSavingsModalVisible(false)}
                     >
-                        <Text style={styles.buttonClose}>Close</Text>
+                        <Text style={styles.planButtonClose}>Close</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -167,14 +168,14 @@ export default function CustomPlan() {
         const IncomeExpensesView = () => (
             <>
                 <InfoModal />
-                <Text style={styles.title}>Enter Monthly Income:</Text>
-                {[['Salary', salary, setSalary], ['Additional Income', additionalIncome, setAdditionalIncome]].map(([label, value, setValue], index) => (
-                    <View style={styles.inputContainer} key={index}>
-                        <Text style={styles.label}>{label}:</Text>
+                <Text style={styles.planTitle}>Enter Monthly Income:</Text>
+                {[['Salary', salary, setSalary], ['Additional Income', additionalIncome, setAdditionalIncome]].map(([planLabel, value, setValue], index) => (
+                    <View style={styles.planInputContainer} key={index}>
+                        <Text style={styles.planLabel}>{planLabel}:</Text>
                         <TextInput style={styles.input} keyboardType="numeric" value={value} onChangeText={setValue} />
                     </View>
                 ))}
-                <Text style={styles.title}>Enter Monthly Expenses:</Text>
+                <Text style={styles.planTitle}>Enter Monthly Expenses:</Text>
                 {[
                     ['Housing', housing, setHousing],
                     ['Utilities', utilities, setUtilities],
@@ -185,17 +186,17 @@ export default function CustomPlan() {
                     ['Debt Payments', debtPayments, setDebtPayments],
                     ['Savings/Investments', savingsInvestments, setSavingsInvestments],
                     ['Other Expenses', otherExpenses, setOtherExpenses]
-                ].map(([label, value, setValue], index) => (
-                    <View style={styles.inputContainer} key={index}>
-                        <Text style={styles.label}>{label}:</Text>
-                        <TextInput style={styles.input} keyboardType="numeric" value={value} onChangeText={setValue} />
+                ].map(([planLabel, value, setValue], index) => (
+                    <View style={styles.planInputContainer} key={index}>
+                        <Text style={styles.planLabel}>{planLabel}:</Text>
+                        <TextInput style={styles.planInput} keyboardType="numeric" value={value} onChangeText={setValue} />
                     </View>
                 ))}
-                <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}>
-                    <Text style={styles.buttonText}>Learn More</Text>
+                <TouchableOpacity style={styles.planButton} onPress={() => setModalVisible(true)}>
+                    <Text style={styles.planButtonText}>Learn More</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => handleNextPage('savingsInvestments')}>
-                    <Text style={styles.buttonText}>Next</Text>
+                <TouchableOpacity style={styles.planButton} onPress={() => handleNextPage('savingsInvestments')}>
+                    <Text style={styles.planButtonText}>Next</Text>
                 </TouchableOpacity>
             </>
         );
@@ -203,70 +204,70 @@ export default function CustomPlan() {
         const SavingsInvestmentsView = () => (
             <>
                 <SavingsInfoModal />
-                <Text style={styles.title}>Savings and Investments:</Text>
+                <Text style={styles.planTitle}>Savings and Investments:</Text>
                 {[
                     ['Total Savings', totalSavings, setTotalSavings],
                     ['Retirement Accounts', retirementAccounts, setRetirementAccounts],
                     ['Stocks and Bonds', stocksAndBonds, setStocksAndBonds],
                     ['Mutual Funds', mutualFunds, setMutualFunds]
-                ].map(([label, value, setValue], index) => (
-                    <View style={styles.inputContainer} key={index}>
-                        <Text style={styles.label}>{label}:</Text>
-                        <TextInput style={styles.input} keyboardType="numeric" value={value} onChangeText={setValue} />
+                ].map(([planLabel, value, setValue], index) => (
+                    <View style={styles.planInputContainer} key={index}>
+                        <Text style={styles.planLabel}>{planLabel}:</Text>
+                        <TextInput style={styles.planInput} keyboardType="numeric" value={value} onChangeText={setValue} />
                     </View>
                 ))}
-                <TouchableOpacity style={styles.button} onPress={() => setSavingsModalVisible(true)}>
-                    <Text style={styles.buttonText}>Learn More</Text>
+                <TouchableOpacity style={styles.planButton} onPress={() => setSavingsModalVisible(true)}>
+                    <Text style={styles.planButtonText}>Learn More</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => handleNextPage('financialPlanReview')}>
-                    <Text style={styles.buttonText}>Next</Text>
+                <TouchableOpacity style={styles.planButton} onPress={() => handleNextPage('financialPlanReview')}>
+                    <Text style={styles.planButtonText}>Next</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => handleNextPage('incomeExpenses')}>
-                    <Text style={styles.buttonText}>Back</Text>
+                <TouchableOpacity style={styles.planButton} onPress={() => handleNextPage('incomeExpenses')}>
+                    <Text style={styles.planButtonText}>Back</Text>
                 </TouchableOpacity>
             </>
         );
     
         const FinancialPlanReviewView = () => (
             <>
-                <Text style={styles.title}>Financial Plan Review</Text>
+                <Text style={styles.planTitle}>Financial Plan Review</Text>
                 <Text style={styles.subtitle}>INCOME SUMMARY</Text>
-                <Text style={styles.label}>Salary: {salary}</Text>
-                <Text style={styles.label}>Additional Income: {additionalIncome}</Text>
+                <Text style={styles.planplanLabel}>Salary: {salary}</Text>
+                <Text style={styles.planplanLabel}>Additional Income: {additionalIncome}</Text>
     
                 <Text style={styles.subtitle}>EXPENSES SUMMARY</Text>
-                <Text style={styles.label}>Housing: {housing}</Text>
-                <Text style={styles.label}>Utilities: {utilities}</Text>
-                <Text style={styles.label}>Food: {food}</Text>
-                <Text style={styles.label}>Transportation: {transportation}</Text>
-                <Text style={styles.label}>Insurance: {insurance}</Text>
-                <Text style={styles.label}>Entertainment: {entertainment}</Text>
-                <Text style={styles.label}>Debt Payments: {debtPayments}</Text>
-                <Text style={styles.label}>Savings/Investments: {savingsInvestments}</Text>
-                <Text style={styles.label}>Other Expenses: {otherExpenses}</Text>
+                <Text style={styles.planLabel}>Housing: {housing}</Text>
+                <Text style={styles.planLabel}>Utilities: {utilities}</Text>
+                <Text style={styles.planLabel}>Food: {food}</Text>
+                <Text style={styles.planLabel}>Transportation: {transportation}</Text>
+                <Text style={styles.planLabel}>Insurance: {insurance}</Text>
+                <Text style={styles.planLabel}>Entertainment: {entertainment}</Text>
+                <Text style={styles.planLabel}>Debt Payments: {debtPayments}</Text>
+                <Text style={styles.planLabel}>Savings/Investments: {savingsInvestments}</Text>
+                <Text style={styles.planLabel}>Other Expenses: {otherExpenses}</Text>
     
                 <Text style={styles.subtitle}>SAVINGS/INVESTMENT SUMMARY</Text>
-                <Text style={styles.label}>Total Savings: {totalSavings}</Text>
-                <Text style={styles.label}>Retirement Accounts: {retirementAccounts}</Text>
-                <Text style={styles.label}>Stocks and Bonds: {stocksAndBonds}</Text>
-                <Text style={styles.label}>Mutual Funds: {mutualFunds}</Text>
-                <Text style={styles.label}>Short-Term Goals: {shortTermGoals}</Text>
-                <Text style={styles.label}>Long-Term Goals: {longTermGoals}</Text>
-                <Text style={styles.label}>Financial Loss Tolerance: {financialLossTolerance}</Text>
-                <Text style={styles.label}>Safety Net: {safetyNet}</Text>
+                <Text style={styles.planLabel}>Total Savings: {totalSavings}</Text>
+                <Text style={styles.planLabel}>Retirement Accounts: {retirementAccounts}</Text>
+                <Text style={styles.planLabel}>Stocks and Bonds: {stocksAndBonds}</Text>
+                <Text style={styles.planLabel}>Mutual Funds: {mutualFunds}</Text>
+                <Text style={styles.planLabel}>Short-Term Goals: {shortTermGoals}</Text>
+                <Text style={styles.planLabel}>Long-Term Goals: {longTermGoals}</Text>
+                <Text style={styles.planLabel}>Financial Loss Tolerance: {financialLossTolerance}</Text>
+                <Text style={styles.planLabel}>Safety Net: {safetyNet}</Text>
     
-                <TouchableOpacity style={styles.button} onPress={handleGeneratePlan}>
-                    <Text style={styles.buttonText}>GENERATE PLAN</Text>
+                <TouchableOpacity style={styles.planButton} onPress={handleGeneratePlan}>
+                    <Text style={styles.planButtonText}>GENERATE PLAN</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => handleNextPage('savingsInvestments')}>
-                    <Text style={styles.buttonText}>Back</Text>
+                <TouchableOpacity style={styles.planButton} onPress={() => handleNextPage('savingsInvestments')}>
+                    <Text style={styles.planButtonText}>Back</Text>
                 </TouchableOpacity>
             </>
         );
     
         return (
-            <ScrollView style={styles.container}>
-            <Text style={styles.header}>Track Your Goals</Text>
+            <ScrollView style={styles.planContainer}>
+            <Text style={styles.planHeader}>Track Your Goals</Text>
                 {loading ? <LoadingView /> :
                  currentPage === 'incomeExpenses' ? <IncomeExpensesView /> :
                  currentPage === 'savingsInvestments' ? <SavingsInvestmentsView /> :

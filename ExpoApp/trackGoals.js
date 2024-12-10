@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import App from './App';
+import styles from './styles';
 
 export default function TrackGoals({ route, navigation }) {
   const [goals, setGoals] = useState([
@@ -37,8 +38,8 @@ export default function TrackGoals({ route, navigation }) {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.header}>Track Goals</Text>
+    <ScrollView style={styles.trackContainer}>
+      <Text style={styles.trackHeader}>Track Goals</Text>
 
       <View style={isEditing ? styles.goalsStacked : styles.goalsRow}>
         {goals.map((goal, index) => (
@@ -49,7 +50,7 @@ export default function TrackGoals({ route, navigation }) {
                 {/* Editing Goal Details */}
                 <Text style={styles.editText}>Monetary Goal (in $): </Text>
                 <TextInput
-                  style={styles.input}
+                  style={styles.trackInput}
                   placeholder="Monetary Goal"
                   keyboardType="numeric"
                   value={String(goal.total)}
@@ -57,7 +58,7 @@ export default function TrackGoals({ route, navigation }) {
                 />
                 <Text style={styles.editText}>Progress (in $): </Text>
                 <TextInput
-                  style={styles.input}
+                  style={styles.trackInput}
                   placeholder="Update Progress"
                   keyboardType="numeric"
                   value={String(goal.progress)}
