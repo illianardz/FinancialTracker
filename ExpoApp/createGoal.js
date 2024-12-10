@@ -115,6 +115,15 @@ export default function CreateGoal({ navigation }) {
 
       {question === 1 && (
         <View style={styles.questionContainer}>
+          <Text style={styles.description}>
+            
+Set your financial goals by choosing what you're saving for
+and specify your target amount and the timeframe you aim to achieve it by. 
+          </Text>
+          <Text style={styles.description}>
+            Our app will help you visualize your progress,
+            ensuring you stay on track and motivated throughout your financial journey!
+          </Text>
           <Text style={styles.label}>What is your goal?</Text>
           <TextInput
             style={styles.goalInput}

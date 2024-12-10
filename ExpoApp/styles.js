@@ -94,6 +94,22 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignItems: 'center',
   },
+  description: {
+    fontSize: 17,
+    marginHorizontal: 20,
+    marginBottom: 20,
+    textAlign: 'justify',
+    lineHeight: 24,
+    fontStyle: 'italic'
+  },
+  descriptionIncome: {
+    fontSize: 16,
+    marginHorizontal: 20,
+    marginTop: 20,
+    textAlign: 'justify',
+    lineHeight: 24,
+    fontStyle: 'italic'
+  },
   summaryCaption: {
     fontSize: 24,
     fontWeight: 'bold',

@@ -40,6 +40,10 @@ export default function TrackGoals({ route, navigation }) {
   return (
     <ScrollView style={styles.trackContainer}>
       <Text style={styles.trackHeader}>Track Goals</Text>
+      <Text style={styles.description}>
+        Monitor your progress by making adjustments to your 
+        existing goals, adding new ones, or removing goals that no longer fit your plans.
+      </Text>
       <View style={isEditing ? styles.goalsStacked : styles.goalsRow}>
         {goals.map((goal, index) => (
           <View key={index} style={isEditing ? styles.centeredGoalContainer : styles.goalContainer}>

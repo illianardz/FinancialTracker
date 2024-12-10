@@ -197,6 +197,13 @@ export default function CustomPlan() {
         const IncomeExpensesView = () => (
             <>
                 <InfoModal />
+                <Text style={styles.descriptionIncome}>
+                    Create a tailored financial plan that perfectly fits your unique financial situation!
+                </Text>
+                <Text style={styles.descriptionIncome}>
+                    For more empowerment in your decision-making, press "Learn More" to 
+                    access information on the financial topics relevant to your inputs.
+                </Text>
                 <Text style={styles.planTitle}>Enter Monthly Income:</Text>
                 {[
                     ['Salary', salary, setSalary], 
