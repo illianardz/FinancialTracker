@@ -26,7 +26,8 @@ export default function CreateGoal({ navigation }) {
          setTotal('');
          setTargetDate('');
     } else {
-      console.log('Please fill in all fields.');
+      console.log("Please fill in all fields.");
+      alert("Please fill in all fields.");
     }
   };
 
@@ -35,6 +36,10 @@ export default function CreateGoal({ navigation }) {
     if (question === 5) {
       finishGoal();
       setQuestion(1);
+      setTitle('');
+      setProgress('');
+      setTotal('');
+      setTargetDate('');
     } else if (question < 5) {
       setQuestion(question + 1);
     }
