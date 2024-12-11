@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
+import { Modal, Text, View, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import App from './App';
 import styles from './styles';
 
@@ -9,6 +9,9 @@ export default function TrackGoals({ route, navigation }) {
     { title: 'Debt', progress: 985, total: 5000 },
     { title: 'Emergency', progress: 4000, total: 8000 },
   ]);
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const [isEditing, setIsEditing] = useState(false);
 
@@ -33,13 +36,27 @@ export default function TrackGoals({ route, navigation }) {
   // Update goal progress or total
   const updateProgress = (index, key, updatedValue) => {
     const updatedGoals = [...goals];
+  
+    if (key === 'progress') {
+      // Validate that progress does not exceed total
+      if (updatedValue > updatedGoals[index].total) {
+        setErrorMessage('Progress cannot exceed the total goal amount. \n');
+        setModalVisible(true);
+        return;
+      }
+    }
+  
     updatedGoals[index] = { ...updatedGoals[index], [key]: updatedValue };
     setGoals(updatedGoals);
   };
 
+  const hideError = () => {
+    setModalVisible(false);
+  };
+
   return (
     <ScrollView style={styles.trackContainer}>
-      <Text style={styles.trackHeader}>Track Goals</Text>
+      <Text style={styles.trackHeader}>Track Goal Progress</Text>
       <Text style={styles.description}>
         Monitor your progress by making adjustments to your 
         existing goals, adding new ones, or removing goals that no longer fit your plans.
@@ -54,7 +71,7 @@ export default function TrackGoals({ route, navigation }) {
                 <Text style={styles.editText}>Monetary Goal (in $): </Text>
                 <TextInput
                   style={styles.trackInput}
-                  placeholder= 'goal.total'
+                  placeholder= 'Total $'
                   keyboardType="numeric"
                   value={Number(goal.total)}
                   onChangeText={(text) => updateProgress(index, 'total', parseInt(text) || 0)}
@@ -62,7 +79,7 @@ export default function TrackGoals({ route, navigation }) {
                 <Text style={styles.editText}>Progress (in $): </Text>
                 <TextInput
                   style={styles.trackInput}
-                  placeholder='goal.progress'
+                  placeholder='Current $'
                   keyboardType="numeric"
                   value={Number(goal.progress)}
                   onChangeText={(text) => updateProgress(index, 'progress', parseInt(text) || 0)}
@@ -99,7 +116,7 @@ export default function TrackGoals({ route, navigation }) {
         onPress={toggleEditMode} 
         style={styles.editButton}
       >
-        <Text style={styles.editButtonText}>{isEditing ? 'Save' : 'Edit Goals'}</Text>
+        <Text style={styles.editButtonText}>{isEditing ? 'Save' : 'Modify Goals'}</Text>
       </TouchableOpacity>
 
       {/* Add Goal Button */}
@@ -118,7 +135,25 @@ export default function TrackGoals({ route, navigation }) {
       >
         <Text style={styles.backButtonText}>Back</Text>
       </TouchableOpacity>
-      
+      <Modal 
+        visible ={modalVisible}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={hideError}
+      >
+        <View style= {styles.errorOverlay}>
+          <View style={styles.errorContainer}>
+            <Text style={styles.errorText}>{errorMessage}
+              <TouchableOpacity 
+                onPress={hideError} 
+                style = {styles.errorButton}
+                >
+                <Text style={styles.errorButtonText}> OK </Text>
+              </TouchableOpacity>
+            </Text>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 }

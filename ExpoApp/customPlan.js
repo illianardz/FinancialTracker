@@ -1,6 +1,6 @@
 import React, { useState } from 'react'; 
 import {
-  StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Modal, ActivityIndicator, Alert
+  Text, View, TouchableOpacity, TextInput, ScrollView, Modal, ActivityIndicator, Alert
 } from 'react-native';
 import styles from './styles';
 

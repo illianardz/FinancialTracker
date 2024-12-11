@@ -101,6 +101,7 @@ export default function CreateGoal({ navigation }) {
     }
   };
 
+  //go back to prev question
   const prevQuestion = () => {
     if (question > 1) {
       setQuestion(question - 1);
@@ -108,9 +109,9 @@ export default function CreateGoal({ navigation }) {
   };
 
   const cancelGoalSetup = () => {
-    // Example of simply going back
+    // Going back
     navigation.goBack();
-    // Or reset form and navigate
+    // reset form and navigate
     resetForm();
   };
 
@@ -225,7 +226,6 @@ and specify your target amount and the timeframe you aim to achieve it by.
         </TouchableOpacity>
       </View>
       {/*Popups for error handling*/}
-
       <Modal 
         visible ={modalVisible}
         animationType="fade"
