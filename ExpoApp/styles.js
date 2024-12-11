@@ -134,6 +134,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: 'white',
     textAlign: 'center',
+    fontWeight: 'bold',
   },
   navButtons: {
     flexDirection: 'row',
@@ -287,24 +288,30 @@ const styles = StyleSheet.create({
   editButton: {
     backgroundColor: '#2C2C2C',
     padding: 10,
-    borderRadius: 5,
     alignItems: 'center',
-    marginTop: 20,
+    justifyContent: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+    borderRadius: 10,
   },
   backButton: {
     backgroundColor: '#2C2C2C',
     padding: 10,
-    borderRadius: 5,
     alignItems: 'center',
-    marginTop: 20,
+    justifyContent: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+    borderRadius: 10,
   },
   backButtonText: {
     color: 'white',
     fontSize: 18,
+    fontWeight: 'bold',
   },
   editButtonText: {
     color: 'white',
     fontSize: 18,
+    fontWeight: 'bold',
   },
   addButtons: {
     flexDirection: 'row',
@@ -314,14 +321,16 @@ const styles = StyleSheet.create({
   addButton: {
     backgroundColor: '#2C2C2C',
     padding: 10,
-    borderRadius: 5,
-    flex: 1,
-    marginTop: 20,
     alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+    borderRadius: 10,
   },
   addButtonText: {
     color: '#E5EBEA',
     fontSize: 18,
+    fontWeight: 'bold',
   },
   removeButton: {
     backgroundColor: '#5f8575',
